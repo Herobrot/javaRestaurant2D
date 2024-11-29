@@ -27,4 +27,6 @@ public class Table {
     }
 
     public void setRoute(List<Point2D> route) { this.route = route; }
+
+    public List<Point2D> getRoute(){ return route; }
 }

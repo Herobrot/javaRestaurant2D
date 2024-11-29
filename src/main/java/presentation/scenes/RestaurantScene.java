@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import domain.components.ClientComponent;
 import domain.entities.Client;
 import domain.entities.Waiter;
 import domain.entities.Chef;
@@ -106,6 +107,7 @@ public class RestaurantScene extends GameApplication {
     }
 
     private void updateGame() {
+        ClientComponent clientComponent = new ClientComponent();
         for (Waiter waiter : waiters) {
             if (!waiter.isAvailable()) {
                 continue;
@@ -119,6 +121,7 @@ public class RestaurantScene extends GameApplication {
                     if (tableNumber != -1) {
                         receptionist.attendCustomer(client);
                         System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
+                        clientComponent.moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute());
                         handleClient(receptionist, client, tableNumber);
                     } else {
                         System.out.println("No tables available for client " + client.getId() + ". Adding to waiting list.");

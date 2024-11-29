@@ -1,10 +1,13 @@
 package domain.monitors;
 
+import com.almasb.fxgl.dsl.FXGL;
 import domain.entities.Client;
 import domain.entities.Order;
 import domain.entities.Table;
 import domain.entities.Waiter;
 import javafx.geometry.Point2D;
+import presentation.events.ClientMoveToTableEvent;
+
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -63,7 +66,9 @@ public class RestaurantMonitor {
 
 
     private void notifyClient(Client client, int tableNumber) {
+        List<Point2D> route = this.tables.get(tableNumber).getRoute();
         client.setTableNumber(tableNumber);
+        FXGL.getEventBus().fireEvent(new ClientMoveToTableEvent(client, route));
         client.setState(Client.ClientState.WAITING_FOR_WAITER);
     }
     public KitchenMonitor getOrderBuffer() {
@@ -112,6 +117,8 @@ public class RestaurantMonitor {
         }
         return -1;
     }
+
+    public synchronized Table getTable(int id){ return tables.get(id); }
 
     public synchronized void setRouteTables(int id, List<Point2D> route){
         tables.get(id).setRoute(route);

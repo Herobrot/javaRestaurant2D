@@ -55,6 +55,7 @@ public class ChairView implements EntityFactory {
                 .type(TypeGame.Client)
                 .at(adjustedX, adjustedY)
                 .viewWithBBox(customerTexture)
+                .with("customer", true)
                 .collidable()
                 .build();
     }

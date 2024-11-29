@@ -12,18 +12,25 @@ import presentation.views.TypeGame;
 import java.util.List;
 
 public class ClientComponent extends Component{
-    private Direction calculateDirection(Point2D from, Point2D to) {
-        Point2D delta = to.subtract(from);
+    private static Direction calculateDirection(Point2D from, Point2D to) {
+        Point2D delta = to.subtract(from).normalize();
+        System.out.println(delta);
 
-        if (delta.equals(new Point2D(0, -1))) return Direction.UP;
-        if (delta.equals(new Point2D(0, 1))) return Direction.DOWN;
+        if (delta.equals(new Point2D(0, -1))) {
+            System.out.println("Arriba");
+            return Direction.UP;
+        };
+        if (delta.equals(new Point2D(0, 1))) {
+            System.out.println("Abajo");
+            return Direction.DOWN;
+        };
         if (delta.equals(new Point2D(-1, 0))) return Direction.LEFT;
         if (delta.equals(new Point2D(1, 0))) return Direction.RIGHT;
 
         throw new IllegalArgumentException("Dirección no válida: " + delta);
     }
 
-    public void moveClientAlongRoute(Client client, List<Point2D> route) {
+    public static void moveClientAlongRoute(Client client, List<Point2D> route) {
         for (int i = 0; i < route.size() - 1; i++) {
             Point2D current = route.get(i);
             Point2D next = route.get(i + 1);
@@ -31,15 +38,15 @@ public class ClientComponent extends Component{
             Direction direction = calculateDirection(current, next);
             client.setDirection(direction);
 
-            updateTextureBasedOnDirection(client, direction);
+            updateTextureBasedOnDirection(direction);
 
             client.setPosition(next);
 
-            moveEntityToPosition(client, next);
+            moveEntityToPosition(next);
         }
     }
 
-    private void updateTextureBasedOnDirection(Client client, Direction direction) {
+    private static void updateTextureBasedOnDirection(Direction direction) {
         String textureFile = switch (direction) {
             case UP -> "clientLookingUp.png";
             case DOWN -> "clientLookingDown.png";
@@ -52,7 +59,7 @@ public class ClientComponent extends Component{
         newTexture.setFitHeight(24);
 
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
-                .filter(entity -> entity.getObject("costumer"))
+                .filter(entity -> entity.getBoolean("customer"))
                 .findFirst()
                 .ifPresent(entity -> {
                     entity.getViewComponent().clearChildren();
@@ -60,7 +67,7 @@ public class ClientComponent extends Component{
                 });
     }
 
-    private void moveEntityToPosition(Client client, Point2D position) {
+    private static void moveEntityToPosition(Point2D position) {
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
                 .filter(entity -> entity.getObject("client"))
                 .findFirst()
