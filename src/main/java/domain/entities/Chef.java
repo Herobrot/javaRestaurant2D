@@ -1,56 +1,60 @@
 package domain.entities;
 
-/**
- * Clase que representa a un cocinero en el restaurante
- * Los cocineros preparan las órdenes que reciben del buffer de órdenes
- */
-public class Chef {
-    private final int id; // Identificador único del cocinero
-    private boolean isCooking; // Indica si el cocinero está cocinando
-    private Order currentOrder; // Orden actual que está preparando
+import domain.monitors.RestaurantMonitor;
 
-    // Constructor
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+
+public class Chef {
+    private final int id;
+    private boolean isAvailable;
+    private BlockingQueue<Order> ordersToCook;
+
+
     public Chef(int id) {
         this.id = id;
-        this.isCooking = false;
-        this.currentOrder = null;
+        this.isAvailable = true;
+        this.ordersToCook = new LinkedBlockingDeque<>();
     }
 
-    /**
-     * Método para comenzar a cocinar una orden
-     *
-     * @param order Orden a preparar
-     * @return true si el cocinero puede comenzar a cocinar, false si está ocupado
-     */
-    public synchronized boolean startCooking(Order order) {
-        if (!isCooking) {
-            isCooking = true;
-            currentOrder = order;
-            return true;
+    public void startCooking(Order order) {
+        if (order == null) {
+            throw new NullPointerException("Cannot add null order");
         }
-        return false;
+        boolean success = ordersToCook.offer(order);
+        if (!success) {
+            System.out.println("Failed to add order to the cooking queue.");
+        }
     }
 
-    /**
-     * Método para finalizar la preparación de una orden
-     */
-    public synchronized void finishCooking() {
-        currentOrder = null;
-        isCooking = false;
-    }
-    public void cook(Order order) {
-        new Thread(() -> {
-            try {
-                System.out.println("Chef " + id + " cocinando pedido " + order.getOrderId());
-                Thread.sleep(3000); // Simular tiempo de cocción
-                System.out.println("Chef " + id + " completó el pedido " + order.getOrderId());
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+
+    public void cook(RestaurantMonitor monitor){
+        new Thread(()->{
+            while(true){
+                try {
+                    Order order = ordersToCook.take();
+                    System.out.println("Chef " + id + " cooking order " + order.getOrderId());
+                    // Simulate cooking time
+                    Thread.sleep(3000); // Tiempo de cocción simulado
+                    order.setState(Order.OrderState.READY);
+                    System.out.println("Chef " + id + " finished cooking order " + order.getOrderId());
+                    monitor.completeOrder(order);  // Notificar que la orden está lista
+                    isAvailable = true;
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }).start();
     }
 
-    public int getId() {
+    public boolean isAvailable(){
+        return isAvailable;
+    }
+
+    public int getId(){
         return id;
+    }
+    public void finishCooking(){
+        isAvailable = true;
     }
 }

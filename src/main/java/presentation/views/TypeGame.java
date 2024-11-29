@@ -9,5 +9,6 @@ public enum TypeGame {
     WAITER, // Mesero
     CHEF, // Cocinero
     TABLE, // Mesa
+    CHAIR, // Silla
     KITCHEN // Cocina
 }
