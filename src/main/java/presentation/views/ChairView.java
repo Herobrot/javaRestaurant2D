@@ -31,7 +31,7 @@ public class ChairView implements EntityFactory {
 
     @Spawns("customer")
     public static Entity createCustomerEntity(Client client) {
-        var customerTexture = texture("recepcion.png").copy();
+        var customerTexture = texture("toriLokingBack.png").copy();
         customerTexture.setFitWidth(300);  // Ajustar el ancho de la imagen
         customerTexture.setFitHeight(250); // Ajustar la altura de la imagen
 
@@ -48,7 +48,7 @@ public class ChairView implements EntityFactory {
 
     @Spawns("waiter")
     public Entity createWaiter(SpawnData data) {
-        var waiterTexture = texture("mesera.png").copy();
+        var waiterTexture = texture("toriTwoLokingBack.png").copy();
         waiterTexture.setFitWidth(300);  // Ajustar el ancho de la imagen
         waiterTexture.setFitHeight(250); // Ajustar la altura de la imagen
 
@@ -65,7 +65,7 @@ public class ChairView implements EntityFactory {
 
     @Spawns("chef")
     public Entity createChef(SpawnData data) {
-        var chefTexture = texture("chef.png").copy();
+        var chefTexture = texture("chefLokingBack.png").copy();
         chefTexture.setFitWidth(300);  // Ajustar el ancho de la imagen
         chefTexture.setFitHeight(250); // Ajustar la altura de la imagen
 

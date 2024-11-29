@@ -6,7 +6,35 @@
   <component name="ChangeListManager">
     <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: start with logic for client,waiter,chef and order">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/blueWallOutOfBounds.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/blueWallOutOfBounds.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/bottomFloor.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/bottomFloor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/bottomFrontWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/bottomFrontWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/chairReception.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/chairReception.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/chairToLeft.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/chairToLeft.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/chairToRight.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/chairToRight.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/dish.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/dish.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/floor.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/floor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/food.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/food.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/frontTopBorderLeftWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/frontTopBorderLeftWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/frontTopBorderRightWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/frontTopBorderRightWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/guiaFondo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/guiaFondo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/kitchenEntrance.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/kitchenEntrance.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/kitchenWithinDoor.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/kitchenWithinDoor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/leftTableReception.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/leftTableReception.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/midTableReception.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/midTableReception.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/outBoundsBorder.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/outBoundsBorder.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/resturant_set.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/resturant_set.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/rightTableReception.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/rightTableReception.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/sideRightWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/sideRightWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/sideTopBorderWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/sideTopBorderWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/table.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/table.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/topFrontWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/topFrontWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/topLeftBorder.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/topLeftBorder.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/topLeftBorderPixelWall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/topLeftBorderPixelWall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/topRightBorder.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/topRightBorder.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/upperTableReception.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/upperTableReception.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/imgs/wall.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/textures/wall.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,27 +51,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "AlanAndreUP"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AlanAndreUP&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Herobrot/javaRestaurant2D.git",
-    "accountId": "26b3600a-d14e-4193-b5cc-1e40b6c87e2e"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Herobrot/javaRestaurant2D.git&quot;,
+    &quot;accountId&quot;: &quot;26b3600a-d14e-4193-b5cc-1e40b6c87e2e&quot;
   }
-}]]></component>
+}</component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2pUYAy3CedhGd3zUzT7rMRrQOL9" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -52,30 +80,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.RestaurantGame.executor": "Run",
-    "Application.RestaurantScene.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Herobrot/Documents/Cuatri-7B/ProgramacionConcurrente/Corte_3/javaRestaurant2D",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.RestaurantGame.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RestaurantScene.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Herobrot/Documents/Cuatri-7B/ProgramacionConcurrente/Corte_3/javaRestaurant2D&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -117,16 +145,12 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="6888b278-7664-4ff9-b641-8267962a404c">
           <value>
             <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -145,10 +169,14 @@
                   </entry>
                 </map>
               </option>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
             </State>
           </value>
         </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
       </map>
     </option>
   </component>
