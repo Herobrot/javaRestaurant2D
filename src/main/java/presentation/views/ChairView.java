@@ -43,13 +43,25 @@ public class ChairView implements EntityFactory {
                 .viewWithBBox(chairTexture)
                 .build();
     }
-    public Point2D getChairPosition(int chairIndex) {
+    public static Point2D getChairPosition(int chairIndex) {
         Entity chairEntity = FXGL.getGameWorld().getEntitiesByType(TypeGame.CHAIR).stream()
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Silla no encontrada"));
 
-        // Obtener su posición en píxeles
         return chairEntity.getPosition();
+    }
+    public static void moveCustomerToChair(Client client, int chairIndex) {
+        // Obtener la posición de la silla
+        Point2D chairPosition = getChairPosition(chairIndex);
+
+        // Buscar la entidad asociada al cliente
+        Entity customerEntity = FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
+                .filter(e -> e.getObject("customer").equals(client))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Cliente no encontrado"));
+
+        // Mover al cliente a la posición de la silla
+        customerEntity.setPosition(chairPosition);
     }
     @Spawns("customer")
     public static Entity createCustomerEntity(Client client) {
@@ -90,11 +102,11 @@ public class ChairView implements EntityFactory {
     @Spawns("chef")
     public Entity createChef(SpawnData data) {
         var chefTexture = texture("chefLokingBack.png").copy();
-        chefTexture.setFitWidth(24);  // Ajustar el ancho de la imagen
-        chefTexture.setFitHeight(24); // Ajustar la altura de la imagen
+        chefTexture.setFitWidth(24);
+        chefTexture.setFitHeight(24);
 
-        double adjustedX = data.getX(); // Mover 50 píxeles a la izquierda
-        double adjustedY = data.getY(); // Mover 50 píxeles hacia abajo
+        double adjustedX = data.getX();
+        double adjustedY = data.getY();
 
         return FXGL.entityBuilder()
                 .from(data)

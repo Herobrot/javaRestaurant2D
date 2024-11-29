@@ -5,6 +5,8 @@ import domain.entities.Order;
 import domain.entities.Table;
 import domain.entities.Waiter;
 
+import presentation.views.ChairView;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class RestaurantMonitor {
         }
 
     }
+
     public synchronized int enterRestaurant(Client client) {
         System.out.println("Entering restaurant " + client.getId());
         System.out.println(tables.size());
@@ -41,6 +44,7 @@ public class RestaurantMonitor {
                 client.setTableNumber(i);
                 kitchenOrders.add(client);
                 tables.get(i).setAvailable(false);
+                ChairView.moveCustomerToChair(client, i);
                 return i;
             }
         }
