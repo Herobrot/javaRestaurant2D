@@ -71,7 +71,7 @@ public class RestaurantScene extends GameApplication {
 
     private void generateInitialClients() {
         System.out.println("Generating initial clients...");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 25; i++) {
             Client newClient = new Client(i);
             waitingClients.add(newClient);
             boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
@@ -133,25 +133,6 @@ public class RestaurantScene extends GameApplication {
             }
         }
         return null;
-    }
-
-
-
-    private void startClientGenerator() {
-        System.out.println("Starting client generator...");
-        if (waitingClients.size() < RESTAURANT_CAPACITY * 2 && restaurantMonitor.getWaitingQueue().size() < RESTAURANT_CAPACITY) {
-            Client newClient = new Client(waitingClients.size());
-            waitingClients.add(newClient);
-            boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
-            if (added) {
-                ChairView.createCustomerEntity(newClient);
-                System.out.println("New client generated: " + newClient.getId());
-            } else {
-                System.out.println("Failed to add client " + newClient.getId() + " to waiting queue");
-            }
-        } else {
-            System.out.println("Client generator skipped (queue full or waiting clients maxed out)");
-        }
     }
 
     public static void main(String[] args) {
