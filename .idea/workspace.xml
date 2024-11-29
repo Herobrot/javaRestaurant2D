@@ -4,8 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="#1 base - Jeshua">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/KitchenMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/KitchenMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" afterDir="false" />
+>>>>>>> 3f0d777242de8f08d1bb28571690497bbf6decfb
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,16 +34,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "AlanAndreUP"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Herobrot/javaRestaurant2D.git",
+    "accountId": "26b3600a-d14e-4193-b5cc-1e40b6c87e2e"
+  }
+}]]></component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="workspaceImportEnabled" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
   <component name="ProjectId" id="2pUYAy3CedhGd3zUzT7rMRrQOL9" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -42,14 +65,35 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.RestaurantGame.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Herobrot/Documents/Cuatri-7B/ProgramacionConcurrente/Corte_3/javaRestaurant2D",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -58,6 +102,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1732821983779</updated>
+      <workItem from="1732839102738" duration="997000" />
     </task>
     <task id="LOCAL-00001" summary="#1 base - Jeshua">
       <created>1732824429680</created>
@@ -69,13 +114,20 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="6888b278-7664-4ff9-b641-8267962a404c">
           <value>
             <State>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -94,16 +146,16 @@
                   </entry>
                 </map>
               </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
             </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
-      </map>
-    </option>
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="#1 base - Jeshua" />
