@@ -49,13 +49,12 @@ public class RestaurantMonitor {
     }
 
     public synchronized void leaveRestaurant(int tableNumber) {
-       tables.get(tableNumber).setAvailable(false);
+       tables.get(tableNumber).setAvailable(true);
         System.out.println("Leaving restaurant " + tableNumber);
 
 
         if (!waitingQueue.isEmpty()) {
             Client nextClient = waitingQueue.poll();
-            tables.get(tableNumber).setAvailable(true);
             notifyClient(nextClient, tableNumber);
         }
     }
