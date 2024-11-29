@@ -64,19 +64,17 @@ public class ChairView implements EntityFactory {
         customerEntity.setPosition(chairPosition);
     }
     @Spawns("customer")
-    public static Entity createCustomerEntity(Client client) {
+    public static Entity createCustomerEntity(SpawnData data) {
         var customerTexture = texture("clientLookingUp.png").copy();
-        customerTexture.setFitWidth(240);
-        customerTexture.setFitHeight(240);
-
-        double adjustedX = 70;
-        double adjustedY = 70;
+        customerTexture.setFitWidth(24);
+        customerTexture.setFitHeight(24);
+        double adjustedX = data.getX();
+        double adjustedY = data.getY();
 
         return FXGL.entityBuilder()
                 .type(TypeGame.Client)
                 .at(adjustedX, adjustedY)
                 .viewWithBBox(customerTexture)
-                .with("customer", client)
                 .collidable()
                 .build();
     }

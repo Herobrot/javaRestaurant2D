@@ -79,7 +79,7 @@ public class RestaurantScene extends GameApplication {
             waitingClients.add(newClient);
             boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
             if (added) {
-                ChairView.createCustomerEntity(newClient);
+                FXGL.spawn("customer", 190 + i * 25, 130);
                 System.out.println("Initial client added: " + newClient.getId());
             } else {
                 System.out.println("Failed to add initial client " + newClient.getId() + " to waiting queue");
