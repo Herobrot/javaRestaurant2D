@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: start with logic for client,waiter,chef and order">
+    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Chef.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" afterDir="false" />
     </list>
@@ -43,6 +48,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -54,30 +62,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.RestaurantGame.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RestaurantScene.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Herobrot/Documents/Cuatri-7B/ProgramacionConcurrente/Corte_3/javaRestaurant2D&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.RestaurantGame.executor": "Run",
+    "Application.RestaurantScene.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Herobrot/Documents/Cuatri-7B/ProgramacionConcurrente/Corte_3/javaRestaurant2D",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -112,19 +121,47 @@
       <option name="project" value="LOCAL" />
       <updated>1732840270009</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="wip: logic for cooking chef">
+      <option name="closed" value="true" />
+      <created>1732851651099</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732851651099</updated>
+    </task>
+    <task id="LOCAL-00004" summary="wip: logic for waiter delivery to client">
+      <option name="closed" value="true" />
+      <created>1732851810456</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1732851810456</updated>
+    </task>
+    <task id="LOCAL-00005" summary="wip: logic for notify to client, eat client, and leaving client.">
+      <option name="closed" value="true" />
+      <created>1732854860923</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1732854860923</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="6888b278-7664-4ff9-b641-8267962a404c">
           <value>
             <State>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -143,6 +180,7 @@
                   </entry>
                 </map>
               </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
             </State>
           </value>
         </entry>
@@ -153,18 +191,26 @@
         </entry>
       </map>
     </option>
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="wip: start with logic for client,waiter,chef and order" />
-    <option name="LAST_COMMIT_MESSAGE" value="wip: start with logic for client,waiter,chef and order" />
+    <MESSAGE value="wip: logic for cooking chef" />
+    <MESSAGE value="wip: logic for waiter delivery to client" />
+    <MESSAGE value="wip: logic for notify to client, eat client, and leaving client." />
+    <option name="LAST_COMMIT_MESSAGE" value="wip: logic for notify to client, eat client, and leaving client." />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
