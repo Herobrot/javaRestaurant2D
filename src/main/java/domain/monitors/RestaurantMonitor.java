@@ -29,6 +29,7 @@ public class RestaurantMonitor {
      * @param Client Cliente que quiere entrar
      * @return número de mesa asignada o -1 si debe esperar
      */
+
     public synchronized int enterRestaurant(Client Client) {
         // Buscar mesa libre
         for (int i = 0; i < tables.length; i++) {
@@ -75,6 +76,7 @@ public class RestaurantMonitor {
     public KitchenMonitor getOrderBuffer() {
         return orderBuffer;
     }
+
 
     // Métodos adicionales
 

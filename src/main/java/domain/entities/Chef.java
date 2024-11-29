@@ -38,6 +38,17 @@ public class Chef {
         currentOrder = null;
         isCooking = false;
     }
+    public void cook(Order order) {
+        new Thread(() -> {
+            try {
+                System.out.println("Chef " + id + " cocinando pedido " + order.getOrderId());
+                Thread.sleep(3000); // Simular tiempo de cocción
+                System.out.println("Chef " + id + " completó el pedido " + order.getOrderId());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+    }
 
     public int getId() {
         return id;
