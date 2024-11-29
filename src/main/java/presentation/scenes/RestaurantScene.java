@@ -64,7 +64,7 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < numChefs; i++) {
             Chef chef = new Chef(i);  // Suponiendo que el constructor de Chef usa un ID
             chefsList.add(chef);
-            FXGL.spawn("chef", 500, 300 + i * 50);
+            FXGL.spawn("chef", 220 + i * 30, 100);
             System.out.println("Chef created: " + chef.getId());
         }
         return chefsList;
@@ -90,7 +90,7 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < numWaiters; i++) {
             Waiter waiter = new Waiter(i);
             waitersList.add(waiter);
-            FXGL.spawn("waiter", 100, 300 + i * 50);
+            FXGL.spawn("waiter", 390 + i * 25, 330);
         }
         return waitersList;
     }

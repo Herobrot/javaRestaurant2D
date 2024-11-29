@@ -6,8 +6,8 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import domain.entities.Client;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.geometry.Point2D;
+
 import static com.almasb.fxgl.dsl.FXGL.texture;
 
 public class ChairView implements EntityFactory {
@@ -43,18 +43,26 @@ public class ChairView implements EntityFactory {
                 .viewWithBBox(chairTexture)
                 .build();
     }
+    public Point2D getChairPosition(int chairIndex) {
+        Entity chairEntity = FXGL.getGameWorld().getEntitiesByType(TypeGame.CHAIR).stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Silla no encontrada"));
+
+        // Obtener su posición en píxeles
+        return chairEntity.getPosition();
+    }
     @Spawns("customer")
     public static Entity createCustomerEntity(Client client) {
         var customerTexture = texture("clientLookingUp.png").copy();
-        customerTexture.setFitWidth(24);  // Ajustar el ancho de la imagen
-        customerTexture.setFitHeight(24); // Ajustar la altura de la imagen
+        customerTexture.setFitWidth(240);
+        customerTexture.setFitHeight(240);
 
-        double adjustedX = 330;
-        double adjustedY = 360;
+        double adjustedX = 70;
+        double adjustedY = 70;
 
         return FXGL.entityBuilder()
-                .at(adjustedX, adjustedY)
                 .type(TypeGame.Client)
+                .at(adjustedX, adjustedY)
                 .viewWithBBox(customerTexture)
                 .with("customer", client)
                 .collidable()

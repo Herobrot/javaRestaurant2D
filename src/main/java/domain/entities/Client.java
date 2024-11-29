@@ -44,7 +44,7 @@ public class Client {
         try {
             // Client eating
             System.out.println("Client " + id + " is eating at table " + tableNumber);
-            Thread.sleep(5000); // Simulate time taken to eat
+            Thread.sleep(50000); // Simulate time taken to eat
             System.out.println("Client " + id + " is done eating at table " + tableNumber);
 
             // Notify waiter that the client is leaving
