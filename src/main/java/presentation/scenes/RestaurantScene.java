@@ -31,6 +31,7 @@ public class RestaurantScene extends GameApplication {
     private List<Waiter> waiters;
     private List<Chef> chefs;
     private List<Client> waitingClients;
+    private Waiter receptionist;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -55,6 +56,7 @@ public class RestaurantScene extends GameApplication {
         waiters = createWaiters(NUM_WAITERS);
         chefs = createChefs(NUM_CHEFS);
         restaurantMonitor = new RestaurantMonitor(RESTAURANT_CAPACITY, waiters.get(0));
+        receptionist = new Waiter(0);
         generateInitialClients();
         startGameLoop();
         System.out.println("Game initialized successfully");
@@ -62,7 +64,7 @@ public class RestaurantScene extends GameApplication {
     private List<Chef> createChefs(int numChefs) {
         List<Chef> chefsList = new ArrayList<>();
         for (int i = 0; i < numChefs; i++) {
-            Chef chef = new Chef(i);  // Suponiendo que el constructor de Chef usa un ID
+            Chef chef = new Chef(i);
             chefsList.add(chef);
             FXGL.spawn("chef", 220 + i * 30, 100);
             System.out.println("Chef created: " + chef.getId());
@@ -87,7 +89,7 @@ public class RestaurantScene extends GameApplication {
 
     private List<Waiter> createWaiters(int numWaiters) {
         List<Waiter> waitersList = new ArrayList<>();
-        for (int i = 0; i < numWaiters; i++) {
+        for (int i = 1; i < numWaiters+1; i++) {
             Waiter waiter = new Waiter(i);
             waitersList.add(waiter);
             FXGL.spawn("waiter", 390 + i * 25, 330);
@@ -96,20 +98,27 @@ public class RestaurantScene extends GameApplication {
     }
 
     private void startGameLoop() {
-        FXGL.run(() -> updateGame(), Duration.seconds(0.5)); // Updates every 0.5 seconds
+        FXGL.run(() -> updateGame(), Duration.seconds(0.5));
     }
 
     private void updateGame() {
         for (Waiter waiter : waiters) {
             if (!waiter.isAvailable()) {
-                continue; // Skip if the waiter is not available
+                continue;
             }
 
-            Client client = restaurantMonitor.getWaitingQueue().poll();
-            if (client != null) {
-                int tableNumber = restaurantMonitor.enterRestaurant(client);
-                if (tableNumber != -1) {
-                    handleClient(waiter, client, tableNumber);
+            if (receptionist.isAvailable()) {
+                Client client = restaurantMonitor.getWaitingQueue().poll();
+                if (client != null) {
+                    int tableNumber = restaurantMonitor.enterRestaurant(client);
+                    System.out.println("Waiter " + waiter.getId() + " entered restaurant " + tableNumber);
+                    if (tableNumber != -1) {
+                        receptionist.attendCustomer(client);
+                        System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
+                        handleClient(receptionist, client, tableNumber);
+                    } else {
+                        System.out.println("No tables available for client " + client.getId() + ". Adding to waiting list.");
+                    }
                 }
             }
         }
