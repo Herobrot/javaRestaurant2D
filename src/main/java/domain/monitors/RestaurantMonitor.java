@@ -2,41 +2,45 @@ package domain.monitors;
 
 import domain.entities.Client;
 import domain.entities.Order;
+import domain.entities.Table;
 import domain.entities.Waiter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Monitor principal que maneja la sincronización del restaurante
- * Controla el acceso a las mesas y la cola de espera
- */
 public class RestaurantMonitor {
-    private final int capacity; // Capacidad total del restaurante
-    private final boolean[] tables; // Estado de las mesas (true = ocupada)
-    public final Queue<Client> waitingQueue; // Cola de espera de clientes
-    private final KitchenMonitor orderBuffer; // Buffer de órdenes
+    private final int capacity;
+    private List<Table> tables;
+    public final Queue<Client> waitingQueue;
+    private final KitchenMonitor orderBuffer;
     private Queue<Client> kitchenOrders;
     private final Waiter waiter;
 
     public RestaurantMonitor(int capacity,Waiter waiter) {
         this.capacity = capacity;
-        this.tables = new boolean[capacity];
         this.waitingQueue = new LinkedList<>();
         this.orderBuffer = new KitchenMonitor();
         this.kitchenOrders =  new LinkedList<>();
+        this.tables = new ArrayList<>();
         this.waiter = waiter;
+        for (int i = 0; i < capacity; i++) {
+            tables.add(new Table(i, true));
+        }
 
     }
     public synchronized int enterRestaurant(Client client) {
-        for (int i = 0; i < tables.length; i++) {
-            if (!tables[i]) {
+        System.out.println("Entering restaurant " + client.getId());
+        System.out.println(tables.size());
+        for (int i = 0; i < tables.size(); i++) {
+            if (tables.get(i).isAvailable()) {
                 System.out.println("Entering restaurant " + i);
                 client.setTableNumber(i);
                 kitchenOrders.add(client);
-                tables[i] = true;
+                tables.get(i).setAvailable(false);
                 return i;
             }
         }
@@ -44,67 +48,37 @@ public class RestaurantMonitor {
         return -1;
     }
 
-    /**
-     * Cliente saliendo del restaurante
-     *
-     * @param tableNumber Número de mesa que se desocupa
-     */
     public synchronized void leaveRestaurant(int tableNumber) {
-        tables[tableNumber] = false; // Liberar mesa
+       tables.get(tableNumber).setAvailable(false);
         System.out.println("Leaving restaurant " + tableNumber);
 
-        // Si hay clientes esperando, asignar la mesa al siguiente
+
         if (!waitingQueue.isEmpty()) {
             Client nextClient = waitingQueue.poll();
-            tables[tableNumber] = true;
+            tables.get(tableNumber).setAvailable(true);
             notifyClient(nextClient, tableNumber);
         }
     }
 
-    /**
-     * Notificar a un cliente que ya tiene mesa
-     *
-     * @param client    Cliente a notificar
-     * @param tableNumber Número de mesa asignada
-     */
+
     private void notifyClient(Client client, int tableNumber) {
         client.setTableNumber(tableNumber);
         client.setState(Client.ClientState.WAITING_FOR_WAITER);
     }
-
-    /**
-     * Obtener el buffer de órdenes
-     */
     public KitchenMonitor getOrderBuffer() {
         return orderBuffer;
     }
 
 
-    // Métodos adicionales
-
-    /**
-     * Agregar una orden al buffer.
-     *
-     * @param order Orden que se va a agregar.
-     */
     public synchronized void addOrder(Order order) {
         orderBuffer.addOrder(order);
     }
 
-    /**
-     * Tomar una orden del buffer para cocinar.
-     *
-     * @return Orden para cocinar, o null si no hay.
-     */
+
     public synchronized Order getOrderToCook() {
         return orderBuffer.getOrderToCook();
     }
 
-    /**
-     * Completar una orden que fue cocinada.
-     *
-     * @param order Orden completada.
-     */
     public synchronized void completeOrder(Order order) {
         orderBuffer.completeOrder(order);
         waiter.addReadyOrder(order);
@@ -128,19 +102,16 @@ public class RestaurantMonitor {
         return null;
     }
 
-    public synchronized boolean hasAvailableTables() {
-        for (boolean table : tables) {
-            if (!table) {
-                return true;
+    public synchronized int getAvailableTable() {
+        for (int i = 0; i < tables.size(); i++) {
+            if (tables.get(i).isAvailable()) {
+                tables.get(i).setAvailable(false);
+                return i;
             }
         }
-        return false;
+        return -1;
     }
-    /**
-     * Obtener la cola de espera de clientes.
-     *
-     * @return Cola de clientes que están esperando mesa.
-     */
+
     public synchronized Queue<Client> getWaitingQueue() {
         return waitingQueue;
     }

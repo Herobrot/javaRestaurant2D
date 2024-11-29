@@ -34,11 +34,11 @@ public class Chef {
                 try {
                     Order order = ordersToCook.take();
                     System.out.println("Chef " + id + " cooking order " + order.getOrderId());
-                    // Simulate cooking time
-                    Thread.sleep(3000); // Tiempo de cocción simulado
+
+                    Thread.sleep(3000);
                     order.setState(Order.OrderState.READY);
                     System.out.println("Chef " + id + " finished cooking order " + order.getOrderId());
-                    monitor.completeOrder(order);  // Notificar que la orden está lista
+                    monitor.completeOrder(order);
                     isAvailable = true;
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

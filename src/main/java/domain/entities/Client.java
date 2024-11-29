@@ -8,8 +8,8 @@ public class Client {
     private ClientState state;
 
     public enum ClientState {
-        WAITING_FOR_WAITER, // Esperando al mesero
-        WAITING_FOR_FOOD,   // Esperando la comida
+        WAITING_FOR_WAITER,
+        WAITING_FOR_FOOD,
         EATING,             // Comiendo
         LEAVING
     }
@@ -39,15 +39,12 @@ public class Client {
         return state;
     }
 
-    // Simulating the actions when the client is done eating and leaving
     public void eatAndLeave(RestaurantMonitor monitor) {
         try {
-            // Client eating
+
             System.out.println("Client " + id + " is eating at table " + tableNumber);
             Thread.sleep(5000); // Simulate time taken to eat
             System.out.println("Client " + id + " is done eating at table " + tableNumber);
-
-            // Notify waiter that the client is leaving
             System.out.println("Client " + id + " notifying waiter that they are leaving.");
             monitor.leaveRestaurant(tableNumber);
 
