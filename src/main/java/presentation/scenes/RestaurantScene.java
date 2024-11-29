@@ -22,8 +22,8 @@ public class RestaurantScene extends GameApplication {
     private static final int RESTAURANT_CAPACITY = 20;
     private static final int NUM_WAITERS = 2;
     private static final int NUM_CHEFS = 3;
-    private static final int WINDOW_WIDTH = 1024;
-    private static final int WINDOW_HEIGHT = 768;
+    private static final int WINDOW_WIDTH = 512;
+    private static final int WINDOW_HEIGHT = 384;
 
     private RestaurantMonitor restaurantMonitor;
     private List<Entity> tables;
@@ -49,7 +49,6 @@ public class RestaurantScene extends GameApplication {
         System.out.println("Initializing game...");
         initializeGameComponents();
         createBackground();
-        createKitchenAndWaitingArea();
         restaurantMonitor = new RestaurantMonitor(RESTAURANT_CAPACITY);
         createTables();
         createStaff();
@@ -108,12 +107,11 @@ public class RestaurantScene extends GameApplication {
 
     private void handleClient(Waiter waiter, Client client, int tableNumber) {
         System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
-            System.out.println("Request Order to Client" + client.getId());
-            int randomId = (int) (FXGL.random() * 1000);
-            Order order = new Order(randomId * 1000, client.getId());
-            restaurantMonitor.getOrderBuffer().addOrder(order);
-            System.out.println("Order created: " + order.getOrderId() + " by client " + client.getId());
-
+        System.out.println("Request Order to Client" + client.getId());
+        int randomId = (int) (FXGL.random() * 1000);
+        Order order = new Order(randomId * 1000, client.getId());
+        restaurantMonitor.getOrderBuffer().addOrder(order);
+        System.out.println("Order created: " + order.getOrderId() + " by client " + client.getId());
     }
 
     private void handleChef(Chef chef, Order order) {
@@ -157,7 +155,8 @@ public class RestaurantScene extends GameApplication {
         try {
             FXGL.entityBuilder()
                     .at(0, 0)
-                    .view("guiaFondo.png")
+                    .view("background.png")
+                    .scale(1.50,1.40)
                     .buildAndAttach();
             System.out.println("Background created successfully");
         } catch (Exception e) {
@@ -165,27 +164,12 @@ public class RestaurantScene extends GameApplication {
         }
     }
 
-    private void createKitchenAndWaitingArea() {
-        System.out.println("Creating kitchen and waiting area...");
-        FXGL.entityBuilder()
-                .at(WINDOW_WIDTH - 180, 250)
-                .view(new Rectangle(150, 200, Color.rgb(255, 255, 224, 0.5)))
-                .buildAndAttach();
-
-        FXGL.entityBuilder()
-                .at(50, 150)
-                .view(new Rectangle(150, 200, Color.rgb(173, 216, 230, 0.5)))
-                .buildAndAttach();
-
-        System.out.println("Kitchen and waiting area created");
-    }
-
     private void createTables() {
         System.out.println("Creating tables...");
         ChairView gameFactory = new ChairView();
-        int startX = 262;
-        int startY = 279;
-        int spacing = 120;
+        int startX = 131;
+        int startY = 219;
+        int spacing = 50;
 
         for (int i = 0; i < RESTAURANT_CAPACITY; i++) {
             int row = i / 5;
@@ -204,14 +188,14 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < NUM_WAITERS; i++) {
             Waiter waiter = new Waiter(i);
             waiters.add(waiter);
-            FXGL.spawn("waiter", 100, 300 + i * 50);
+            FXGL.spawn("waiter", 370 + i * 25, 330);
         }
         System.out.println("Waiters created: " + waiters.size());
 
         for (int i = 0; i < NUM_CHEFS; i++) {
             Chef chef = new Chef(i);
             chefs.add(chef);
-            FXGL.spawn("chef", WINDOW_WIDTH - 150, 100 + i * 50);
+            FXGL.spawn("chef", 220 + i *30, 100 );
         }
         System.out.println("Chefs created: " + chefs.size());
     }
