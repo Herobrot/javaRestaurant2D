@@ -50,12 +50,10 @@ public class Client {
         try {
 
             System.out.println("Client " + id + " is eating at table " + tableNumber);
-            Thread.sleep(50000); // Simulate time taken to eat
+            Thread.sleep(5000);
             System.out.println("Client " + id + " is done eating at table " + tableNumber);
             System.out.println("Client " + id + " notifying waiter that they are leaving.");
             monitor.leaveRestaurant(tableNumber);
-
-
             this.state = ClientState.LEAVING;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

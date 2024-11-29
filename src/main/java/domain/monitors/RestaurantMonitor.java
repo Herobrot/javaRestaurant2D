@@ -87,6 +87,7 @@ public class RestaurantMonitor {
 
     public synchronized void completeOrder(Order order) {
         orderBuffer.completeOrder(order);
+        System.out.println("Completed order " + order);
         waiter.addReadyOrder(order);
     }
     public Client notifyClientFoodReady(Order order) {

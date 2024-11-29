@@ -69,7 +69,7 @@ public class ClientComponent extends Component{
 
     private static void moveEntityToPosition(Point2D position) {
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
-                .filter(entity -> entity.getObject("client"))
+                .filter(entity -> entity.getObject("customer"))
                 .findFirst()
                 .ifPresent(entity -> entity.setPosition(position));
     }

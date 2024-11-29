@@ -103,7 +103,7 @@ public class RestaurantScene extends GameApplication {
     }
 
     private void startGameLoop() {
-        FXGL.run(() -> updateGame(), Duration.seconds(0.5));
+        FXGL.run(() -> updateGame(), Duration.seconds(5));
     }
 
     private void updateGame() {
@@ -121,8 +121,9 @@ public class RestaurantScene extends GameApplication {
                     if (tableNumber != -1) {
                         receptionist.attendCustomer(client);
                         System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
+                        receptionist.finishService();
                         clientComponent.moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute());
-                        handleClient(receptionist, client, tableNumber);
+                        handleClient(waiter, client, tableNumber);
                     } else {
                         System.out.println("No tables available for client " + client.getId() + ". Adding to waiting list.");
                     }
@@ -140,8 +141,9 @@ public class RestaurantScene extends GameApplication {
         if(chef != null){
             chef.startCooking(order);
             chef.cook(restaurantMonitor);
+            waiter.takeOrder(restaurantMonitor);
         }
-        waiter.takeOrder(restaurantMonitor);
+
     }
     private Chef findAvailableChef() {
         for (Chef chef : chefs) {
