@@ -2,9 +2,12 @@ package domain.monitors;
 
 import domain.entities.Client;
 import domain.entities.Order;
+import domain.entities.Waiter;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Monitor principal que maneja la sincronización del restaurante
@@ -15,31 +18,37 @@ public class RestaurantMonitor {
     private final boolean[] tables; // Estado de las mesas (true = ocupada)
     public final Queue<Client> waitingQueue; // Cola de espera de clientes
     private final KitchenMonitor orderBuffer; // Buffer de órdenes
+    private BlockingQueue<Order> kitchenOrders;
+    private final Waiter waiter;
 
-    public RestaurantMonitor(int capacity) {
+    public RestaurantMonitor(int capacity,Waiter waiter) {
         this.capacity = capacity;
         this.tables = new boolean[capacity];
         this.waitingQueue = new LinkedList<>();
         this.orderBuffer = new KitchenMonitor();
+        this.kitchenOrders = new LinkedBlockingQueue<>();
+        this.waiter = waiter;
+
     }
 
     /**
      * Cliente intentando entrar al restaurante
      *
-     * @param Client Cliente que quiere entrar
+     * @param client Cliente que quiere entrar
      * @return número de mesa asignada o -1 si debe esperar
      */
 
-    public synchronized int enterRestaurant(Client Client) {
+    public synchronized int enterRestaurant(Client client) {
         // Buscar mesa libre
         for (int i = 0; i < tables.length; i++) {
             if (!tables[i]) {
+                client.setTableNumber(i);
                 tables[i] = true; // Ocupar mesa
                 return i;
             }
         }
         // Si no hay mesas libres, añadir a la cola de espera
-        waitingQueue.add(Client);
+        waitingQueue.add(client);
         return -1;
     }
 
@@ -50,6 +59,7 @@ public class RestaurantMonitor {
      */
     public synchronized void leaveRestaurant(int tableNumber) {
         tables[tableNumber] = false; // Liberar mesa
+        System.out.println("Leaving restaurant " + tableNumber);
 
         // Si hay clientes esperando, asignar la mesa al siguiente
         if (!waitingQueue.isEmpty()) {
@@ -105,6 +115,7 @@ public class RestaurantMonitor {
      */
     public synchronized void completeOrder(Order order) {
         orderBuffer.completeOrder(order);
+        waiter.addReadyOrder(order);
     }
 
     /**

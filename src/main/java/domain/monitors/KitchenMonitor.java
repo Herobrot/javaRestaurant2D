@@ -41,7 +41,7 @@ public class KitchenMonitor {
             }
         }
         Order order = pendingOrders.poll();
-        System.out.println("Pedido recogido del buffer: " + order.getOrderId());
+        System.out.println("Order get of buffer: " + order.getOrderId());
         return order;
     }
     public synchronized boolean isEmpty() {
