@@ -124,6 +124,7 @@ public class RestaurantScene extends GameApplication {
             chef.startCooking(order);
             chef.cook(restaurantMonitor);
         }
+        waiter.takeOrder(restaurantMonitor);
     }
     private Chef findAvailableChef() {
         for (Chef chef : chefs) {

@@ -89,6 +89,7 @@ public class Waiter {
         }).start();
     }
     public void addReadyOrder(Order order){
+        System.out.println("Waiter " + id + " adding ready order by kichent" + order.getOrderId());
         readyOrders.offer(order);
     }
 }
