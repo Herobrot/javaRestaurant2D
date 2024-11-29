@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import domain.components.ClientComponent;
 import domain.entities.Client;
 import domain.entities.Waiter;
@@ -68,7 +69,10 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < numChefs; i++) {
             Chef chef = new Chef(i);
             chefsList.add(chef);
-            FXGL.spawn("chef", 220 + i * 30, 100);
+            SpawnData spawnData = new SpawnData(220 + i * 30, 100)
+                    .put("id", i);
+
+            FXGL.spawn("chef", spawnData);
             System.out.println("Chef created: " + chef.getId());
         }
         return chefsList;
@@ -81,7 +85,9 @@ public class RestaurantScene extends GameApplication {
             waitingClients.add(newClient);
             boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
             if (added) {
-                FXGL.spawn("customer", 310, 340 + i * 25);
+                SpawnData spawnData = new SpawnData(310, 340 + i * 25)
+                        .put("id", i);
+                FXGL.spawn("customer", spawnData);
                 newClient.setPosition(new Point2D(310, 340 + i * 25));
                 boolean isSamePosition = newClient.getPosition().equals(new Point2D(190 + i * 25, 130));
                 System.out.println("Las posiciones coinciden: " + isSamePosition);
@@ -97,7 +103,10 @@ public class RestaurantScene extends GameApplication {
         for (int i = 1; i < numWaiters+1; i++) {
             Waiter waiter = new Waiter(i);
             waitersList.add(waiter);
-            FXGL.spawn("waiter", 390 + i * 25, 330);
+            SpawnData spawnData = new SpawnData(390 + i * 25, 330)
+                    .put("id", i);
+
+            FXGL.spawn("waiter", spawnData);
         }
         return waitersList;
     }

@@ -50,12 +50,13 @@ public class ChairView implements EntityFactory {
         customerTexture.setFitHeight(24);
         double adjustedX = data.getX();
         double adjustedY = data.getY();
+        int customerId = data.get("id");
 
         return FXGL.entityBuilder()
                 .type(TypeGame.Client)
                 .at(adjustedX, adjustedY)
                 .viewWithBBox(customerTexture)
-                .with("customer", true)
+                .with("id", customerId)
                 .collidable()
                 .build();
     }
@@ -67,12 +68,14 @@ public class ChairView implements EntityFactory {
         waiterTexture.setFitHeight(24);
 
         double adjustedX = data.getX();
+        int waiterId = data.get("id");
         double adjustedY = data.getY();
 
         return FXGL.entityBuilder()
                 .from(data)
                 .at(adjustedX, adjustedY)
                 .type(TypeGame.WAITER)
+                .with("id", waiterId)
                 .viewWithBBox(waiterTexture)
                 .collidable()
                 .build();
@@ -83,7 +86,7 @@ public class ChairView implements EntityFactory {
         var chefTexture = texture("chefLokingBack.png").copy();
         chefTexture.setFitWidth(24);
         chefTexture.setFitHeight(24);
-
+        int chefId = data.get("id");
         double adjustedX = data.getX();
         double adjustedY = data.getY();
 
@@ -91,6 +94,7 @@ public class ChairView implements EntityFactory {
                 .from(data)
                 .at(adjustedX, adjustedY)
                 .type(TypeGame.CHEF)
+                .with("id", chefId)
                 .viewWithBBox(chefTexture)
                 .collidable()
                 .build();
