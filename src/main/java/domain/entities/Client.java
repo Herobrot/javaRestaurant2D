@@ -1,11 +1,17 @@
 package domain.entities;
 
+import com.almasb.fxgl.texture.Texture;
+import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
+import javafx.geometry.Point2D;
 
 public class Client {
+    private Point2D position;
+    private Direction direction;
     private final int id;
     private int tableNumber;
     private ClientState state;
+    private Texture texture;
 
     public enum ClientState {
         WAITING_FOR_WAITER,
@@ -17,6 +23,7 @@ public class Client {
     public Client(int id) {
         this.id = id;
         this.state = ClientState.WAITING_FOR_WAITER;
+        this.direction = Direction.UP;
     }
 
     public int getId() {
@@ -53,5 +60,33 @@ public class Client {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void move() {
+        this.position = position.add(direction.vector);
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }

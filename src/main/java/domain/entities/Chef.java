@@ -5,6 +5,9 @@ import domain.monitors.RestaurantMonitor;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.component.Component;
+
 public class Chef {
     private final int id;
     private boolean isAvailable;

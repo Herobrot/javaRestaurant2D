@@ -8,6 +8,7 @@ import domain.entities.Client;
 import domain.entities.Waiter;
 import domain.entities.Chef;
 import domain.entities.Order;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -51,11 +52,11 @@ public class RestaurantScene extends GameApplication {
         System.out.println("Initializing game...");
         initializeGameComponents();
         createBackground();
-        createTables();
-        createChairs();
         waiters = createWaiters(NUM_WAITERS);
         chefs = createChefs(NUM_CHEFS);
         restaurantMonitor = new RestaurantMonitor(RESTAURANT_CAPACITY, waiters.get(0));
+        createTables();
+        createChairs();
         receptionist = new Waiter(0);
         generateInitialClients();
         startGameLoop();
@@ -79,7 +80,10 @@ public class RestaurantScene extends GameApplication {
             waitingClients.add(newClient);
             boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
             if (added) {
-                FXGL.spawn("customer", 190 + i * 25, 130);
+                FXGL.spawn("customer", 310, 340 + i * 25);
+                newClient.setPosition(new Point2D(310, 340 + i * 25));
+                boolean isSamePosition = newClient.getPosition().equals(new Point2D(190 + i * 25, 130));
+                System.out.println("Las posiciones coinciden: " + isSamePosition);
                 System.out.println("Initial client added: " + newClient.getId());
             } else {
                 System.out.println("Failed to add initial client " + newClient.getId() + " to waiting queue");
@@ -166,6 +170,7 @@ public class RestaurantScene extends GameApplication {
     private void createTables() {
         System.out.println("Creating tables...");
         ChairView gameFactory = new ChairView();
+        Point2D clientStartPosition = new Point2D(330, 360);
         int startX = 131;
         int startY = 229;
         int spacing = 60;
@@ -173,14 +178,39 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < RESTAURANT_CAPACITY; i++) {
             int row = i / 4;
             int col = i % 4;
+            double colX = startX + col * spacing;
+            double rowY = startY + row * spacing;
             Entity table = gameFactory.createTable(
-                    startX + col * spacing,
-                    startY + row * spacing);
+                    colX,
+                    rowY);
             tables.add(table);
             FXGL.getGameWorld().addEntity(table);
+            Point2D tablePosition = new Point2D(startX + col * spacing, startY + row * spacing);
+            List<Point2D> route = calculateRoute(clientStartPosition, tablePosition);
+            restaurantMonitor.setRouteTables(i, route);
         }
         System.out.println("Tables created: " + tables.size());
     }
+    private List<Point2D> calculateRoute(Point2D start, Point2D end) {
+        List<Point2D> route = new ArrayList<>();
+
+        double step = 10; // Tamaño del paso entre puntos
+        double deltaX = end.getX() - start.getX();
+        double deltaY = end.getY() - start.getY();
+
+        for (double x = start.getX(); Math.abs(x - end.getX()) > step; x += Math.signum(deltaX) * step) {
+            route.add(new Point2D(x, start.getY()));
+        }
+
+        for (double y = start.getY(); Math.abs(y - end.getY()) > step; y += Math.signum(deltaY) * step) {
+            route.add(new Point2D(end.getX(), y));
+        }
+
+        route.add(end);
+
+        return route;
+    }
+
 
     private void createChairs(){
         System.out.println("Creando sillas...");

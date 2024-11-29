@@ -4,8 +4,7 @@ import domain.entities.Client;
 import domain.entities.Order;
 import domain.entities.Table;
 import domain.entities.Waiter;
-
-import presentation.views.ChairView;
+import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -44,7 +43,6 @@ public class RestaurantMonitor {
                 client.setTableNumber(i);
                 kitchenOrders.add(client);
                 tables.get(i).setAvailable(false);
-                ChairView.moveCustomerToChair(client, i);
                 return i;
             }
         }
@@ -113,6 +111,11 @@ public class RestaurantMonitor {
             }
         }
         return -1;
+    }
+
+    public synchronized void setRouteTables(int id, List<Point2D> route){
+        tables.get(id).setRoute(route);
+
     }
 
     public synchronized Queue<Client> getWaitingQueue() {

@@ -43,26 +43,6 @@ public class ChairView implements EntityFactory {
                 .viewWithBBox(chairTexture)
                 .build();
     }
-    public static Point2D getChairPosition(int chairIndex) {
-        Entity chairEntity = FXGL.getGameWorld().getEntitiesByType(TypeGame.CHAIR).stream()
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Silla no encontrada"));
-
-        return chairEntity.getPosition();
-    }
-    public static void moveCustomerToChair(Client client, int chairIndex) {
-        // Obtener la posición de la silla
-        Point2D chairPosition = getChairPosition(chairIndex);
-
-        // Buscar la entidad asociada al cliente
-        Entity customerEntity = FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
-                .filter(e -> e.getObject("customer").equals(client))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Cliente no encontrado"));
-
-        // Mover al cliente a la posición de la silla
-        customerEntity.setPosition(chairPosition);
-    }
     @Spawns("customer")
     public static Entity createCustomerEntity(SpawnData data) {
         var customerTexture = texture("clientLookingUp.png").copy();
