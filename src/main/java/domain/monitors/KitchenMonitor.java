@@ -35,16 +35,18 @@ public class KitchenMonitor {
     public synchronized Order getOrderToCook() {
         while (pendingOrders.isEmpty()) {
             try {
-                // Esperar si no hay órdenes pendientes.
-                wait();
+                wait(); // Espera hasta que haya un pedido disponible
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Restaurar el estado de interrupción.
-                return null;
+                Thread.currentThread().interrupt();
             }
         }
-        return pendingOrders.poll();
+        Order order = pendingOrders.poll();
+        System.out.println("Pedido recogido del buffer: " + order.getOrderId());
+        return order;
     }
-
+    public synchronized boolean isEmpty() {
+        return pendingOrders.isEmpty();
+    }
     /**
      * Cocinero marca una orden como completada.
      *

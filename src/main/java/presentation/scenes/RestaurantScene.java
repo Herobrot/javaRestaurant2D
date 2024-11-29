@@ -40,89 +40,148 @@ public class RestaurantScene extends GameApplication {
         settings.setManualResizeEnabled(true);
         settings.setScaleAffectedOnResize(true);
         settings.setPreserveResizeRatio(true);
+
+        System.out.println("Settings initialized");
     }
 
     @Override
     protected void initGame() {
+        System.out.println("Initializing game...");
         initializeGameComponents();
         createBackground();
         createKitchenAndWaitingArea();
         restaurantMonitor = new RestaurantMonitor(RESTAURANT_CAPACITY);
         createTables();
         createStaff();
+
+        generateInitialClients();
+
         startClientGenerator();
-        updateGame();
+        startGameLoop();
+        System.out.println("Game initialized successfully");
+    }
+
+    private void generateInitialClients() {
+        System.out.println("Generating initial clients...");
+        for (int i = 0; i < 5; i++) { // Genera 5 clientes iniciales
+            Client newClient = new Client(i);
+            waitingClients.add(newClient);
+            boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
+            if (added) {
+                ChairView.createCustomerEntity(newClient);
+                System.out.println("Initial client added: " + newClient.getId());
+            } else {
+                System.out.println("Failed to add initial client " + newClient.getId() + " to waiting queue");
+            }
+        }
+    }
+
+    private void startGameLoop() {
+        FXGL.run(() -> updateGame(), Duration.seconds(0.5)); // Actualiza cada 0.5 segundos
     }
 
     private void updateGame() {
-        FXGL.run(() -> {
-            for (Waiter waiter : waiters) {
-                if (waiter.isAvailable() && !restaurantMonitor.getWaitingQueue().isEmpty()) {
-                    Client Client = restaurantMonitor.getWaitingQueue().poll();
-                    int tableNumber = restaurantMonitor.enterRestaurant(Client);
+        // Asignar clientes a meseros disponibles
+        for (Waiter waiter : waiters) {
+            if (waiter.isAvailable()) {
+                Client client = restaurantMonitor.getWaitingQueue().poll();
+                if (client != null) {
+                    int tableNumber = restaurantMonitor.enterRestaurant(client);
                     if (tableNumber != -1) {
-                        handleClient(waiter, Client, tableNumber);
+                        handleClient(waiter, client, tableNumber);
                     }
                 }
             }
+        }
 
-            for (Chef chef : chefs) {
-                Order orderToCook = restaurantMonitor.getOrderBuffer().getOrderToCook();
-                if (orderToCook != null) {
-                    handleChef(chef, orderToCook);
-                }
+        // Verificar si los chefs tienen órdenes que cocinar
+        for (Chef chef : chefs) {
+            Order orderToCook = restaurantMonitor.getOrderBuffer().getOrderToCook();
+            if (orderToCook != null) {
+                handleChef(chef, orderToCook);
+            } else {
+                System.out.println("Chef " + chef.getId() + " no encontró órdenes para cocinar.");
             }
-        }, Duration.seconds(0.1)); // Ejecuta la actualización cada 0.1 segundos
+        }
     }
 
-    private void handleClient(Waiter waiter, Client Client, int tableNumber) {
-        // Simula el tiempo de servicio usando FXGL.runOnce
-        FXGL.runOnce(() -> {
+
+    private void handleClient(Waiter waiter, Client client, int tableNumber) {
+        System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
+            System.out.println("Request Order to Client" + client.getId());
             int randomId = (int) (FXGL.random() * 1000);
-            Order order = new Order(randomId * 1000 , Client.getId());
+            Order order = new Order(randomId * 1000, client.getId());
             restaurantMonitor.getOrderBuffer().addOrder(order);
-            System.out.println("Mesero " + waiter.getId() + " tomó la orden del cliente " + Client.getId() + " en la mesa " + tableNumber);
-        }, Duration.seconds(1)); // Simula un tiempo de servicio de 1 segundo
-    }
+            System.out.println("Order created: " + order.getOrderId() + " by client " + client.getId());
 
+    }
 
     private void handleChef(Chef chef, Order order) {
-        FXGL.runOnce(() -> {
+        System.out.println("Chef " + chef.getId() + " preparing order " + order.getOrderId());
+
             restaurantMonitor.getOrderBuffer().completeOrder(order);
-            System.out.println("Chef " + chef.getId() + " ha completado la orden: " + order.getOrderId());
-        }, Duration.seconds(2));
+            System.out.println("Order completed: " + order.getOrderId() + " by chef " + chef.getId());
+        // Simulate 2 seconds cooking time
     }
 
-    private void initializeGameComponents() {
-        tables = new ArrayList<>();
-        waiters = new ArrayList<>();
-        chefs = new ArrayList<>();
-        waitingClients = new ArrayList<>();
-        FXGL.getGameWorld().addEntityFactory(new ChairView());
+    private void startClientGenerator() {
+        System.out.println("Starting client generator...");
+
+            System.out.println("Checking client generator conditions...");
+            if (waitingClients.size() < RESTAURANT_CAPACITY * 2 && restaurantMonitor.getWaitingQueue().size() < RESTAURANT_CAPACITY) {
+                Client newClient = new Client(waitingClients.size());
+                waitingClients.add(newClient);
+                boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
+                if (added) {
+                    ChairView.createCustomerEntity(newClient);
+                    System.out.println("New client generated: " + newClient.getId());
+                } else {
+                    System.out.println("Failed to add client " + newClient.getId() + " to waiting queue");
+                }
+            } else {
+                System.out.println("Client generator skipped (queue full or waiting clients maxed out)");
+            }
+
     }
 
+    private double getPoissonRandomTime() {
+        double lambda = 1.0; // Reducido para generar clientes más rápido
+        return -Math.log(1.0 - Math.random()) / lambda;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
     private void createBackground() {
-        FXGL.entityBuilder()
-                .at(0, 0)
-                .view("background.png")
-                .buildAndAttach();
+        System.out.println("Creating background...");
+        try {
+            FXGL.entityBuilder()
+                    .at(0, 0)
+                    .view("guiaFondo.png")
+                    .buildAndAttach();
+            System.out.println("Background created successfully");
+        } catch (Exception e) {
+            System.err.println("Error loading background: " + e.getMessage());
+        }
     }
 
     private void createKitchenAndWaitingArea() {
-        // Área de cocina
+        System.out.println("Creating kitchen and waiting area...");
         FXGL.entityBuilder()
                 .at(WINDOW_WIDTH - 180, 250)
                 .view(new Rectangle(150, 200, Color.rgb(255, 255, 224, 0.5)))
                 .buildAndAttach();
 
-        // Área de espera
         FXGL.entityBuilder()
                 .at(50, 150)
                 .view(new Rectangle(150, 200, Color.rgb(173, 216, 230, 0.5)))
                 .buildAndAttach();
+
+        System.out.println("Kitchen and waiting area created");
     }
 
     private void createTables() {
+        System.out.println("Creating tables...");
         ChairView gameFactory = new ChairView();
         int startX = 262;
         int startY = 279;
@@ -137,40 +196,32 @@ public class RestaurantScene extends GameApplication {
             tables.add(table);
             FXGL.getGameWorld().addEntity(table);
         }
+        System.out.println("Tables created: " + tables.size());
     }
 
     private void createStaff() {
-        // Crear meseros
+        System.out.println("Creating staff...");
         for (int i = 0; i < NUM_WAITERS; i++) {
             Waiter waiter = new Waiter(i);
             waiters.add(waiter);
             FXGL.spawn("waiter", 100, 300 + i * 50);
         }
+        System.out.println("Waiters created: " + waiters.size());
 
-        // Crear cocineros
         for (int i = 0; i < NUM_CHEFS; i++) {
             Chef chef = new Chef(i);
             chefs.add(chef);
             FXGL.spawn("chef", WINDOW_WIDTH - 150, 100 + i * 50);
         }
+        System.out.println("Chefs created: " + chefs.size());
     }
-
-    private void startClientGenerator() {
-        FXGL.run(() -> {
-            if (waitingClients.size() < RESTAURANT_CAPACITY * 2) {
-                Client newClient = new Client(waitingClients.size());
-                waitingClients.add(newClient);
-                ChairView.createCustomerEntity(newClient);
-            }
-        }, Duration.seconds(getPoissonRandomTime()));
-    }
-
-    private double getPoissonRandomTime() {
-        double lambda = 2.0;
-        return -Math.log(1.0 - Math.random()) / lambda;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+    private void initializeGameComponents() {
+        System.out.println("Initializing game components...");
+        tables = new ArrayList<>();
+        waiters = new ArrayList<>();
+        chefs = new ArrayList<>();
+        waitingClients = new ArrayList<>();
+        FXGL.getGameWorld().addEntityFactory(new ChairView());
+        System.out.println("Game components initialized");
     }
 }
