@@ -38,15 +38,15 @@ public class ClientComponent extends Component{
             Direction direction = calculateDirection(current, next);
             client.setDirection(direction);
 
-            updateTextureBasedOnDirection(direction);
+            updateTextureBasedOnDirection(direction, client);
 
             client.setPosition(next);
 
-            moveEntityToPosition(next);
+            moveEntityToPosition(next, client);
         }
     }
 
-    private static void updateTextureBasedOnDirection(Direction direction) {
+    private static void updateTextureBasedOnDirection(Direction direction, Client client) {
         String textureFile = switch (direction) {
             case UP -> "clientLookingUp.png";
             case DOWN -> "clientLookingDown.png";
@@ -59,7 +59,7 @@ public class ClientComponent extends Component{
         newTexture.setFitHeight(24);
 
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
-                .filter(entity -> entity.getBoolean("customer"))
+                .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
                 .ifPresent(entity -> {
                     entity.getViewComponent().clearChildren();
@@ -67,9 +67,9 @@ public class ClientComponent extends Component{
                 });
     }
 
-    private static void moveEntityToPosition(Point2D position) {
+    private static void moveEntityToPosition(Point2D position, Client client) {
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
-                .filter(entity -> entity.getObject("customer"))
+                .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
                 .ifPresent(entity -> entity.setPosition(position));
     }
