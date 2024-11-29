@@ -4,53 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/FXGL-28-nov.-2024-13.36.02.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/application/SimulationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/KitchenMonitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/blueWallOutOfBounds.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/bottomFloor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/bottomFrontWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/chairReception.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/chairToLeft.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/chairToRight.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/dish.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/floor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/food.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/frontTopBorderLeftWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/frontTopBorderRightWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/guiaFondo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/kitchenEntrance.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/kitchenWithinDoor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/leftTableReception.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/midTableReception.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/outBoundsBorder.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/resturant_set.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/rightTableReception.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/sideRightWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/sideTopBorderWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/table.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/topFrontWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/topLeftBorder.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/topLeftBorderPixelWall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/topRightBorder.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/upperTableReception.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/imgs/wall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/sounds/backgroundMusic.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/system/Readme.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/system/fxgl.bundle" afterDir="false" />
+    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="#1 base - Jeshua">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +59,14 @@
       <option name="presentableId" value="Default" />
       <updated>1732821983779</updated>
     </task>
+    <task id="LOCAL-00001" summary="#1 base - Jeshua">
+      <created>1732824429680</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732824429680</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -141,5 +104,9 @@
         <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="#1 base - Jeshua" />
+    <option name="LAST_COMMIT_MESSAGE" value="#1 base - Jeshua" />
   </component>
 </project>
