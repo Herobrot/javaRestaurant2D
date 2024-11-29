@@ -18,7 +18,7 @@ public class RestaurantMonitor {
     private final boolean[] tables; // Estado de las mesas (true = ocupada)
     public final Queue<Client> waitingQueue; // Cola de espera de clientes
     private final KitchenMonitor orderBuffer; // Buffer de órdenes
-    private BlockingQueue<Order> kitchenOrders;
+    private Queue<Client> kitchenOrders;
     private final Waiter waiter;
 
     public RestaurantMonitor(int capacity,Waiter waiter) {
@@ -26,28 +26,20 @@ public class RestaurantMonitor {
         this.tables = new boolean[capacity];
         this.waitingQueue = new LinkedList<>();
         this.orderBuffer = new KitchenMonitor();
-        this.kitchenOrders = new LinkedBlockingQueue<>();
+        this.kitchenOrders =  new LinkedList<>();
         this.waiter = waiter;
 
     }
-
-    /**
-     * Cliente intentando entrar al restaurante
-     *
-     * @param client Cliente que quiere entrar
-     * @return número de mesa asignada o -1 si debe esperar
-     */
-
     public synchronized int enterRestaurant(Client client) {
-        // Buscar mesa libre
         for (int i = 0; i < tables.length; i++) {
             if (!tables[i]) {
+                System.out.println("Entering restaurant " + i);
                 client.setTableNumber(i);
-                tables[i] = true; // Ocupar mesa
+                kitchenOrders.add(client);
+                tables[i] = true;
                 return i;
             }
         }
-        // Si no hay mesas libres, añadir a la cola de espera
         waitingQueue.add(client);
         return -1;
     }
@@ -117,12 +109,25 @@ public class RestaurantMonitor {
         orderBuffer.completeOrder(order);
         waiter.addReadyOrder(order);
     }
+    public Client notifyClientFoodReady(Order order) {
+        System.out.println(order.getCustomerId());
+        Client client = getClientById(order.getCustomerId());
+        if (client != null) {
+            client.setState(Client.ClientState.EATING);
+            System.out.println("Notifying client " + client.getId() + " that food is ready at table " + client.getTableNumber());
+        }
+        return client;
+    }
 
-    /**
-     * Verificar si hay mesas disponibles.
-     *
-     * @return true si hay al menos una mesa disponible, false de lo contrario.
-     */
+    private Client getClientById(int clientId) {
+        for (Client client : kitchenOrders) {
+            if (client.getId() == clientId) {
+                return client;
+            }
+        }
+        return null;
+    }
+
     public synchronized boolean hasAvailableTables() {
         for (boolean table : tables) {
             if (!table) {

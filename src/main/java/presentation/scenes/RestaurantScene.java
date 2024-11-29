@@ -72,7 +72,7 @@ public class RestaurantScene extends GameApplication {
 
     private void generateInitialClients() {
         System.out.println("Generating initial clients...");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 25; i++) {
             Client newClient = new Client(i);
             waitingClients.add(newClient);
             boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
