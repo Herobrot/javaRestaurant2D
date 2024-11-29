@@ -34,7 +34,6 @@ public class Waiter {
         Order order = new Order(client.getId(), tableNumber);
         new Thread(() -> {
             try {
-                // Simular tiempo de servicio
                 Thread.sleep(2000);
                 monitor.getOrderBuffer().addOrder(order);
                 System.out.println("Order created: " + order.getOrderId() + " by client " + client.getId());
@@ -74,22 +73,10 @@ public class Waiter {
     }
 
     public void addReadyOrder(Order order) {
-        System.out.println("Waiter " + id + " adding ready order by kitchen " + order.getOrderId());
+        System.out.println("Waiter " + id + " adding ready order " + order.getOrderId() + "by client " + order.getCustomerId());
         readyOrders.offer(order);
     }
-    public void monitorClient(Client client, RestaurantMonitor monitor) {
-        new Thread(() -> {
-            try {
-                while (client.getState() != Client.ClientState.LEAVING) {
-                    Thread.sleep(1000);
-                }
-                System.out.println("Waiter " + id + " received notification that client " + client.getId() + " is leaving.");
-                monitor.leaveRestaurant(client.getTableNumber());
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }).start();
-    }
+
     public boolean isAvailable(){
         return isAvailable;
     }
