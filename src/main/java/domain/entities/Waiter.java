@@ -23,6 +23,7 @@ public class Waiter {
         if (isAvailable) {
             isAvailable = false;
             currentCustomer = customer;
+            customer.setState();
             return true;
         }
         return false;

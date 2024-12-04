@@ -130,8 +130,8 @@ public class RestaurantScene extends GameApplication {
                     if (tableNumber != -1) {
                         receptionist.attendCustomer(client);
                         System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
+                        clientComponent.moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute(), client.getState());
                         receptionist.finishService();
-                        clientComponent.moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute());
                         handleClient(waiter, client, tableNumber);
                     } else {
                         System.out.println("No tables available for client " + client.getId() + ". Adding to waiting list.");
