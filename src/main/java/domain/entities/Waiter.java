@@ -66,7 +66,6 @@ public class Waiter {
                 try {
                     Order order = readyOrders.take();
                     System.out.println("Waiter " + id + " took order " + order.getOrderId() + " for client " + order.getCustomerId());
-                    Thread.sleep(1000);
                     System.out.println("Waiter " + id + " delivered order " + order.getOrderId() + " to client " + order.getCustomerId());
                     Client client  = monitor.notifyClientFoodReady(order);
                     if(client != null) {
