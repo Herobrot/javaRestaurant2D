@@ -1,6 +1,7 @@
 package domain.entities;
 
 import com.almasb.fxgl.texture.Texture;
+import domain.components.ClientComponent;
 import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
 import javafx.geometry.Point2D;
@@ -12,6 +13,7 @@ public class Client {
     private int tableNumber;
     private ClientState state;
     private Texture texture;
+    private ClientComponent component;
 
     public enum ClientState {
         WAITING_FOR_WAITER,
@@ -24,6 +26,7 @@ public class Client {
         this.id = id;
         this.state = ClientState.WAITING_FOR_WAITER;
         this.direction = Direction.UP;
+        this.component = new ClientComponent();
     }
 
     public int getId() {
@@ -45,6 +48,10 @@ public class Client {
     public ClientState getState() {
         return state;
     }
+    public void setComponent(ClientComponent component) {
+        this.component = component;
+    }
+
 
     public void eatAndLeave(RestaurantMonitor monitor) {
         try {

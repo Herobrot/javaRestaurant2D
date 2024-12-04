@@ -11,12 +11,12 @@ import domain.entities.Client;
 import domain.entities.Waiter;
 import domain.entities.Chef;
 import domain.entities.Order;
+import domain.observer.ClientObserver;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import domain.monitors.RestaurantMonitor;
 import presentation.views.ChairView;
+import utils.IClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +84,12 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < 25; i++) {
             Client newClient = new Client(i);
             waitingClients.add(newClient);
+            ClientComponent clientComponent = new ClientComponent();
+            IClientLogger clientLogger = new IClientLogger();
+            ClientObserver clientObserver = new ClientObserver(newClient);
+            restaurantMonitor.addObserver(clientObserver);
+            clientComponent.addObserver(clientLogger);
+            newClient.setComponent(clientComponent);
             boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
             if (added) {
                 SpawnData spawnData = new SpawnData(310, 340 + i * 25)
@@ -98,6 +104,7 @@ public class RestaurantScene extends GameApplication {
             }
         }
     }
+
 
     private List<Waiter> createWaiters(int numWaiters) {
         List<Waiter> waitersList = new ArrayList<>();
@@ -131,10 +138,12 @@ public class RestaurantScene extends GameApplication {
                     if (tableNumber != -1) {
                         receptionist.attendCustomer(client);
                         System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
+                        restaurantMonitor.notifyObservers("Cliente " + client.getId() + " fue sentado en la mesa " + tableNumber);
                         clientComponent.moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute(), client.getState());
                         receptionist.finishService();
                         handleClient(waiter, client, tableNumber);
                     } else {
+                        restaurantMonitor.notifyObservers("Cliente " + client.getId() + " fue puesto en espera.");
                         System.out.println("No tables available for client " + client.getId() + ". Adding to waiting list.");
                     }
                 }

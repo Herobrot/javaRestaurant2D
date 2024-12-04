@@ -1,41 +1,56 @@
 package domain.components;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
 import domain.components.services.Direction;
 import domain.entities.Client;
+import domain.observer.IClientObserver;
 import javafx.geometry.Point2D;
 import presentation.views.TypeGame;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ClientComponent extends Component{
+public class ClientComponent extends Component {
+    private final List<IClientObserver> observers = new ArrayList<>();
+
+    public void addObserver(IClientObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(IClientObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyPositionChanged(int clientId, Point2D newPosition) {
+        for (IClientObserver observer : observers) {
+            observer.onClientPositionChanged(clientId, newPosition);
+        }
+    }
+
+    private void notifyDirectionChanged(int clientId, Direction newDirection) {
+        for (IClientObserver observer : observers) {
+            observer.onClientDirectionChanged(clientId, newDirection);
+        }
+    }
+
     private static Direction calculateDirection(Point2D from, Point2D to, Client.ClientState clientState) {
         Point2D delta = to.subtract(from).normalize();
-        System.out.println(delta);
 
         if (clientState == Client.ClientState.WAITING_FOR_FOOD || clientState == Client.ClientState.EATING) {
-            System.out.println("Sentado de pana");
             return Direction.RIGHT;
         }
 
-        if (delta.equals(new Point2D(0, -1))) {
-            System.out.println("Arriba");
-            return Direction.UP;
-        };
-        if (delta.equals(new Point2D(0, 1))) {
-            System.out.println("Abajo");
-            return Direction.DOWN;
-        };
+        if (delta.equals(new Point2D(0, -1))) return Direction.UP;
+        if (delta.equals(new Point2D(0, 1))) return Direction.DOWN;
         if (delta.equals(new Point2D(-1, 0))) return Direction.LEFT;
         if (delta.equals(new Point2D(1, 0))) return Direction.RIGHT;
 
         throw new IllegalArgumentException("Dirección no válida: " + delta);
     }
 
-    public static void moveClientAlongRoute(Client client, List<Point2D> route, Client.ClientState clientState) {
+    public void moveClientAlongRoute(Client client, List<Point2D> route, Client.ClientState clientState) {
         for (int i = 0; i < route.size() - 1; i++) {
             Point2D current = route.get(i);
             Point2D next = route.get(i + 1);
@@ -43,9 +58,14 @@ public class ClientComponent extends Component{
             Direction direction = calculateDirection(current, next, clientState);
             client.setDirection(direction);
 
-            updateTextureBasedOnDirection(direction, client);
+            // Notificar cambio de dirección
+            notifyDirectionChanged(client.getId(), direction);
 
+            updateTextureBasedOnDirection(direction, client);
             client.setPosition(next);
+
+            // Notificar cambio de posición
+            notifyPositionChanged(client.getId(), next);
 
             moveEntityToPosition(next, client);
         }
@@ -67,23 +87,15 @@ public class ClientComponent extends Component{
                 .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
                 .ifPresent(entity -> {
-                    System.out.println("Entre en " + client.getId() + " de actualizar textura");
                     entity.getViewComponent().clearChildren();
                     entity.getViewComponent().addChild(newTexture);
                 });
     }
 
     private static void moveEntityToPosition(Point2D position, Client client) {
-        //Convertir posicion a int y luego modificar para ajustarlo a las mesas. O arreglar
-        //desfase de dimensiones de las mesas con los clientes
-
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
                 .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
-                .ifPresent(entity -> {
-                    System.out.println("Entre en " + client.getId() + " de actualizar posicion");
-                    entity.setPosition(position);
-                });
+                .ifPresent(entity -> entity.setPosition(position));
     }
-
 }

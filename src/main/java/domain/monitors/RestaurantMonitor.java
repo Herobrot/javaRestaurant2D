@@ -5,6 +5,7 @@ import domain.entities.Client;
 import domain.entities.Order;
 import domain.entities.Table;
 import domain.entities.Waiter;
+import domain.observer.Observable;
 import javafx.geometry.Point2D;
 import presentation.events.ClientMoveToTableEvent;
 
@@ -16,7 +17,7 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class RestaurantMonitor {
+public class RestaurantMonitor  extends Observable {
     private final int capacity;
     private List<Table> tables;
     public final Queue<Client> waitingQueue;
@@ -50,6 +51,7 @@ public class RestaurantMonitor {
             }
         }
         waitingQueue.add(client);
+        notifyObservers("Cliente " + client.getId() + " asignado a la mesa " + client.getTableNumber());
         return -1;
     }
 
@@ -76,21 +78,12 @@ public class RestaurantMonitor {
     }
 
 
-    public synchronized void addOrder(Order order) {
-        orderBuffer.addOrder(order);
-    }
-
-
-    public synchronized Order getOrderToCook() {
-        return orderBuffer.getOrderToCook();
-    }
-
     public synchronized void completeOrder(Order order) {
         orderBuffer.completeOrder(order);
         System.out.println("Completed order " + order);
         waiter.addReadyOrder(order);
     }
-    public Client notifyClientFoodReady(Order order) {
+    public synchronized Client notifyClientFoodReady(Order order) {
         System.out.println(order.getCustomerId());
         Client client = getClientById(order.getCustomerId());
         if (client != null) {
@@ -107,16 +100,6 @@ public class RestaurantMonitor {
             }
         }
         return null;
-    }
-
-    public synchronized int getAvailableTable() {
-        for (int i = 0; i < tables.size(); i++) {
-            if (tables.get(i).isAvailable()) {
-                tables.get(i).setAvailable(false);
-                return i;
-            }
-        }
-        return -1;
     }
 
     public synchronized Table getTable(int id){ return tables.get(id); }
