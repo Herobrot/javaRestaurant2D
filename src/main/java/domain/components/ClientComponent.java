@@ -74,6 +74,9 @@ public class ClientComponent extends Component{
     }
 
     private static void moveEntityToPosition(Point2D position, Client client) {
+        //Convertir posicion a int y luego modificar para ajustarlo a las mesas. O arreglar
+        //desfase de dimensiones de las mesas con los clientes
+
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
                 .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()

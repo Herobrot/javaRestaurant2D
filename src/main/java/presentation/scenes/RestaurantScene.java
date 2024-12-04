@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import domain.components.ClientComponent;
+import domain.components.WaiterComponent;
 import domain.entities.Client;
 import domain.entities.Waiter;
 import domain.entities.Chef;
@@ -143,14 +144,17 @@ public class RestaurantScene extends GameApplication {
 
     private void handleClient(Waiter waiter, Client client, int tableNumber) {
         System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
+        WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
         waiter.attendCustomer(client);
         System.out.println("Requesting order from client " + client.getId());
+        WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150));
         Chef chef = findAvailableChef();
         Order order = waiter.serveClient(client, tableNumber, restaurantMonitor);
         if(chef != null){
             chef.startCooking(order);
             chef.cook(restaurantMonitor);
             waiter.takeOrder(restaurantMonitor);
+            WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
         }
 
     }
@@ -201,6 +205,7 @@ public class RestaurantScene extends GameApplication {
             FXGL.getGameWorld().addEntity(table);
             Point2D tablePosition = new Point2D(startX + col * spacing, startY + row * spacing);
             List<Point2D> route = calculateRoute(clientStartPosition, tablePosition);
+            //Puede que el error de las posiciones con los clientes radique aquí
             restaurantMonitor.setRouteTables(i, route);
         }
         System.out.println("Tables created: " + tables.size());
@@ -211,7 +216,7 @@ public class RestaurantScene extends GameApplication {
         double step = 10; // Tamaño del paso entre puntos
         double deltaX = end.getX() - start.getX();
         double deltaY = end.getY() - start.getY();
-
+        //Es MUY posible que el rutado de aquí sea el causante de que los clientes estén desalineados
         for (double x = start.getX(); Math.abs(x - end.getX()) > step; x += Math.signum(deltaX) * step) {
             route.add(new Point2D(x, start.getY()));
         }

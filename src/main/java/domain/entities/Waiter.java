@@ -1,11 +1,17 @@
 package domain.entities;
 
+import com.almasb.fxgl.texture.Texture;
+import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
+import javafx.geometry.Point2D;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class Waiter {
+    private Point2D position;
+    private Direction direction;
+    private Texture texture;
     private final int id;
     private boolean isAvailable;
     private Client currentCustomer;
@@ -23,7 +29,8 @@ public class Waiter {
         if (isAvailable) {
             isAvailable = false;
             currentCustomer = customer;
-            customer.setState();
+            customer.setState(Client.ClientState.WAITING_FOR_FOOD);
+            System.out.println("Atendi el cliente " + customer.getId());
             return true;
         }
         return false;
@@ -84,5 +91,23 @@ public class Waiter {
 
     public int getId(){
         return id;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setPosition(Point2D position) { this.position = position; }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }
