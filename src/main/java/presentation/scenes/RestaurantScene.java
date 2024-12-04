@@ -158,32 +158,62 @@ public class RestaurantScene extends GameApplication {
 
     private void handleClient(Waiter waiter, Client client, int tableNumber) {
         CompletableFuture.runAsync(() -> {
-                    System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
-                    WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
-                    System.out.println("Estoy en el primer asyncrono");//Nunca se ejecuta
-                }).thenRunAsync(() -> pause(3)) // Pausa 3 segundos
-                .thenRunAsync(() -> {
-                    waiter.attendCustomer(client);
-                    System.out.println("Requesting order from client " + client.getId());
-                    System.out.println("Estoy en el SEGUNDO asyncrono"); //Nunca se ejecuta
-                }).thenRunAsync(() -> pause(3)) // Pausa 3 segundos
-                .thenRunAsync(() -> {
-                    WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150));
-                    System.out.println("[MESERO RESTAURANTE] Estoy en: " +waiter.getPosition());
-                })
-                .thenRunAsync(() -> pause(3)) // Pausa 3 segundos
-                .thenRunAsync(() -> {
-                    Chef chef = findAvailableChef();
-                    Order order = waiter.serveClient(client, tableNumber, restaurantMonitor);
-                    if (chef != null) {
-                        chef.startCooking(order);
-                        ChefComponent.moveChefTo(chef, "Up", chef.getPosition().add(-25, -25));
-                        chef.cook(restaurantMonitor);
-                        ChefComponent.moveChefTo(chef, "Down", chef.getPosition().add(25, 25));
-                        waiter.takeOrder(restaurantMonitor);
-                        WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0));
-                    }
-                });
+            try {
+                System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
+                WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
+                System.out.println("Estoy en el primer asyncrono");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).thenRunAsync(() -> {
+            try {
+                pause(3); // Pause 3 seconds
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).thenRunAsync(() -> {
+            try {
+                waiter.attendCustomer(client);
+                System.out.println("Requesting order from client " + client.getId());
+                System.out.println("Estoy en el SEGUNDO asyncrono");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).thenRunAsync(() -> {
+            try {
+                pause(3); // Pause 3 seconds
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).thenRunAsync(() -> {
+            try {
+                WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150));
+                System.out.println("[MESERO RESTAURANTE] Estoy en: " + waiter.getPosition());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).thenRunAsync(() -> {
+            try {
+                pause(3); // Pause 3 seconds
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).thenRunAsync(() -> {
+            try {
+                Chef chef = findAvailableChef();
+                Order order = waiter.serveClient(client, tableNumber, restaurantMonitor);
+                if (chef != null) {
+                    chef.startCooking(order);
+                    ChefComponent.moveChefTo(chef, "Up", chef.getPosition().add(-25, -25));
+                    chef.cook(restaurantMonitor);
+                    ChefComponent.moveChefTo(chef, "Down", chef.getPosition().add(25, 25));
+                    waiter.takeOrder(restaurantMonitor);
+                    WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     // Método para simular pausas (sin bloquear)

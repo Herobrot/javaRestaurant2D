@@ -7,6 +7,7 @@ import com.almasb.fxgl.texture.Texture;
 import domain.components.services.Direction;
 import domain.entities.Client;
 import domain.entities.Waiter;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import presentation.views.TypeGame;
 
@@ -19,12 +20,14 @@ public class WaiterComponent extends Component{
         throw new IllegalArgumentException("Dirección no funca en waiterComponent");
     }
     public static void moveWaiterTo(Waiter waiter, String direction, Point2D position) {
-        waiter.setDirection(calculateDirection(direction));
-        updateTextureBasedOnDirection(calculateDirection(direction), waiter);
-        moveEntityToPosition(position, waiter);
-        waiter.setPosition(position);
+        Platform.runLater(() -> {
+            // Perform all UI-related operations safely within the JavaFX Application Thread
+            waiter.setDirection(calculateDirection(direction));
+            updateTextureBasedOnDirection(calculateDirection(direction), waiter);
+            moveEntityToPosition(position, waiter);
+            waiter.setPosition(position); // Update position in the UI
+        });
     }
-
     private static void updateTextureBasedOnDirection(Direction direction, Waiter waiter) {
         String textureFile = switch (direction) {
             case UP -> "waiterLookingUp.png";
