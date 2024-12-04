@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
 import domain.components.services.Direction;
 import domain.entities.Chef;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import presentation.views.TypeGame;
 
@@ -18,10 +19,12 @@ public class ChefComponent extends Component{
         throw new IllegalArgumentException("Error de direccion, se obtuvo: " + direction);
     }
     public static void moveChefTo(Chef chef, String direction, Point2D position) {
+        Platform.runLater(() -> {
         chef.setDirection(calculateDirection(direction));
         updateTextureBasedOnDirection(calculateDirection(direction), chef);
         chef.setPosition(position);
         moveEntityToPosition(position, chef);
+        });
     }
 
     private static void updateTextureBasedOnDirection(Direction direction, Chef chef) {
