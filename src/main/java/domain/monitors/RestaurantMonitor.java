@@ -71,12 +71,12 @@ public class RestaurantMonitor  extends Observable {
         List<Point2D> route = this.tables.get(tableNumber).getRoute();
         client.setTableNumber(tableNumber);
         FXGL.getEventBus().fireEvent(new ClientMoveToTableEvent(client, route));
+        client.getComponent().moveClientOneStep(client);
         client.setState(Client.ClientState.WAITING_FOR_WAITER);
     }
     public KitchenMonitor getOrderBuffer() {
         return orderBuffer;
     }
-
 
     public synchronized void completeOrder(Order order) {
         orderBuffer.completeOrder(order);
