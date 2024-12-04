@@ -3,6 +3,7 @@ package domain.entities;
 import com.almasb.fxgl.texture.Texture;
 import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 
 import java.util.concurrent.BlockingQueue;
@@ -70,7 +71,9 @@ public class Waiter {
                     System.out.println("Waiter " + id + " delivered order " + order.getOrderId() + " to client " + order.getCustomerId());
                     Client client  = monitor.notifyClientFoodReady(order);
                     if(client != null) {
-                        client.eatAndLeave(monitor);
+                        Platform.runLater(() -> {
+                            client.eatAndLeave(monitor);
+                        });
                     }
                     isAvailable = true;
                 } catch (InterruptedException e) {
