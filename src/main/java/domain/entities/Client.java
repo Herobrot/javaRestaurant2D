@@ -6,6 +6,8 @@ import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
 import javafx.geometry.Point2D;
 
+import java.util.List;
+
 public class Client {
     private Point2D position;
     private Direction direction;
@@ -14,6 +16,7 @@ public class Client {
     private ClientState state;
     private Texture texture;
     private ClientComponent component;
+    private List<Point2D> route;
 
     public enum ClientState {
         WAITING_FOR_WAITER,
@@ -41,6 +44,10 @@ public class Client {
         return tableNumber;
     }
 
+    public void setRoute(List<Point2D> route) { this.route = route; }
+
+    public List<Point2D> getRoute(){ return route; }
+
     public void setState(ClientState state) {
         this.state = state;
     }
@@ -51,7 +58,7 @@ public class Client {
     public void setComponent(ClientComponent component) {
         this.component = component;
     }
-
+    public ClientComponent getComponent(){ return component; }
 
     public void eatAndLeave(RestaurantMonitor monitor) {
         try {

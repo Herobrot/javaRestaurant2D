@@ -10,7 +10,7 @@ public class ClientObserver implements Observer {
 
     @Override
     public void update(String message) {
-        System.out.println("Cliente " + client.getId() + " recibió notificación: " + message);
+        client.getComponent().moveClientOneStep(client);
     }
 }
 

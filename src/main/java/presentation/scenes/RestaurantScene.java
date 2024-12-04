@@ -100,8 +100,6 @@ public class RestaurantScene extends GameApplication {
                         .put("id", i);
                 FXGL.spawn("customer", spawnData);
                 newClient.setPosition(new Point2D(310, 340 + i * 25));
-                boolean isSamePosition = newClient.getPosition().equals(new Point2D(190 + i * 25, 130));
-                System.out.println("Las posiciones coinciden: " + isSamePosition);
                 System.out.println("Initial client added: " + newClient.getId());
             } else {
                 System.out.println("Failed to add initial client " + newClient.getId() + " to waiting queue");
@@ -144,7 +142,7 @@ public class RestaurantScene extends GameApplication {
                         receptionist.attendCustomer(client);
                         System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
                         restaurantMonitor.notifyObservers("Cliente " + client.getId() + " fue sentado en la mesa " + tableNumber);
-                        clientComponent.moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute(), client.getState());
+                        client.getComponent().moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute());
                         receptionist.finishService();
                         handleClient(waiter, client, tableNumber);
                     } else {
@@ -272,7 +270,7 @@ public class RestaurantScene extends GameApplication {
             tables.add(table);
             FXGL.getGameWorld().addEntity(table);
             Point2D tablePosition = new Point2D(startX + col * spacing, startY + row * spacing);
-            List<Point2D> route = calculateRoute(clientStartPosition, tablePosition);
+            List<Point2D> route = calculateDirectRoute(clientStartPosition, tablePosition);
             //Puede que el error de las posiciones con los clientes radique aquí
             restaurantMonitor.setRouteTables(i, route);
         }
@@ -281,12 +279,14 @@ public class RestaurantScene extends GameApplication {
     private List<Point2D> calculateRoute(Point2D start, Point2D end) {
         List<Point2D> route = new ArrayList<>();
 
-        double step = 10; // Tamaño del paso entre puntos
+        double step = 3; // Nodos
         double deltaX = end.getX() - start.getX();
         double deltaY = end.getY() - start.getY();
         //Es MUY posible que el rutado de aquí sea el causante de que los clientes estén desalineados
         for (double x = start.getX(); Math.abs(x - end.getX()) > step; x += Math.signum(deltaX) * step) {
-            route.add(new Point2D(x, start.getY()));
+            Point2D pos = new Point2D(x, start.getY());
+            System.out.println("[RUTA] Mi posicion es: " + pos + " Voy en el [PASO]: " + step);
+            route.add(pos);
         }
 
         for (double y = start.getY(); Math.abs(y - end.getY()) > step; y += Math.signum(deltaY) * step) {
@@ -295,6 +295,23 @@ public class RestaurantScene extends GameApplication {
 
         route.add(end);
 
+        return route;
+    }
+
+    private List<Point2D> calculateDirectRoute(Point2D start, Point2D end) {
+        List<Point2D> route = new ArrayList<>();
+        double deltaX = end.getX() - start.getX();
+        double deltaY = end.getY() - start.getY();
+        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        double step = 3; // Node spacing
+
+        for (double t = 0; t <= 1; t += step / distance) {
+            double x = start.getX() + t * deltaX;
+            double y = start.getY() + t * deltaY;
+            route.add(new Point2D(x, y));
+        }
+
+        route.add(end);
         return route;
     }
 

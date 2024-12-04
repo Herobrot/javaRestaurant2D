@@ -50,24 +50,36 @@ public class ClientComponent extends Component {
         throw new IllegalArgumentException("Dirección no válida: " + delta);
     }
 
-    public void moveClientAlongRoute(Client client, List<Point2D> route, Client.ClientState clientState) {
+    public void moveClientOneStep(Client client){
+        if (client.getState() == Client.ClientState.WAITING_FOR_WAITER){
+            var posTo = client.getPosition().add(0, -50);
+            Direction direction = calculateDirection(client.getPosition(), posTo, client.getState());
+            client.setDirection(direction);
+            updateTextureBasedOnDirection(direction, client);
+
+            moveEntityToPosition(posTo, client);
+        }
+    }
+    public void moveClientAlongRoute(Client client, List<Point2D> route) {
         for (int i = 0; i < route.size() - 1; i++) {
             Point2D current = route.get(i);
             Point2D next = route.get(i + 1);
 
-            Direction direction = calculateDirection(current, next, clientState);
+            Direction direction = calculateDirection(current, next, client.getState());
             client.setDirection(direction);
 
-            // Notificar cambio de dirección
-            notifyDirectionChanged(client.getId(), direction);
 
             updateTextureBasedOnDirection(direction, client);
             client.setPosition(next);
 
-            // Notificar cambio de posición
-            notifyPositionChanged(client.getId(), next);
-
             moveEntityToPosition(next, client);
+            //El cliente va al primer nodo, dejando un espacio en la cola. Se pone el if
+            // ya qué cuando avance para el siguiente nodo, terminaría haciendo que los otros observando en cola avancen
+            // otro paso cuando aún no hay espacio.
+            if(i==0){
+                notifyDirectionChanged(client.getId(), direction);
+                notifyPositionChanged(client.getId(), next);
+            }
         }
     }
 
