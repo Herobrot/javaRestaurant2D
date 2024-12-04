@@ -1,16 +1,19 @@
 package domain.entities;
 
+import com.almasb.fxgl.texture.Texture;
+import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
+import javafx.geometry.Point2D;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
-
 public class Chef {
     private final int id;
     private boolean isAvailable;
+    private Point2D position;
+    private Direction direction;
+    private Texture texture;
     private BlockingQueue<Order> ordersToCook;
 
 
@@ -59,5 +62,23 @@ public class Chef {
     }
     public void finishCooking(){
         isAvailable = true;
+    }
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setPosition(Point2D position) { this.position = position; }
+    public Point2D getPosition() { return position; }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }

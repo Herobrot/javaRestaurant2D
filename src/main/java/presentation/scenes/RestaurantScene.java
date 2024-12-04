@@ -5,6 +5,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import domain.components.ChefComponent;
 import domain.components.ClientComponent;
 import domain.components.WaiterComponent;
 import domain.entities.Client;
@@ -69,6 +70,7 @@ public class RestaurantScene extends GameApplication {
         List<Chef> chefsList = new ArrayList<>();
         for (int i = 0; i < numChefs; i++) {
             Chef chef = new Chef(i);
+            chef.setPosition(new Point2D(220 + i * 30, 100));
             chefsList.add(chef);
             SpawnData spawnData = new SpawnData(220 + i * 30, 100)
                     .put("id", i);
@@ -110,6 +112,7 @@ public class RestaurantScene extends GameApplication {
         List<Waiter> waitersList = new ArrayList<>();
         for (int i = 1; i < numWaiters+1; i++) {
             Waiter waiter = new Waiter(i);
+            waiter.setPosition(new Point2D(390 + i * 25, 330));
             waitersList.add(waiter);
             SpawnData spawnData = new SpawnData(390 + i * 25, 330)
                     .put("id", i);
@@ -161,9 +164,12 @@ public class RestaurantScene extends GameApplication {
         Order order = waiter.serveClient(client, tableNumber, restaurantMonitor);
         if(chef != null){
             chef.startCooking(order);
+            ChefComponent.moveChefTo(chef, "Up", chef.getPosition().add(-25, -25));
             chef.cook(restaurantMonitor);
+            ChefComponent.moveChefTo(chef, "Down", chef.getPosition().add(25, 25));
             waiter.takeOrder(restaurantMonitor);
-            WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
+            WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0));
+            WaiterComponent.moveWaiterTo(waiter, "Left", waiter.getPosition());
         }
 
     }

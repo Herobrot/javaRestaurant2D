@@ -100,7 +100,7 @@ public class Waiter {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-
+    public Point2D getPosition(){ return position; }
     public void setPosition(Point2D position) { this.position = position; }
 
     public void setTexture(Texture texture) {

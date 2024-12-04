@@ -10,8 +10,6 @@ import domain.entities.Waiter;
 import javafx.geometry.Point2D;
 import presentation.views.TypeGame;
 
-import java.util.List;
-
 public class WaiterComponent extends Component{
     public static Direction calculateDirection(String direction){
         if ("Up".equals(direction)) return Direction.UP;
@@ -39,7 +37,7 @@ public class WaiterComponent extends Component{
         newTexture.setFitWidth(24);
         newTexture.setFitHeight(24);
 
-        FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
+        FXGL.getGameWorld().getEntitiesByType(TypeGame.WAITER).stream()
                 .filter(entity -> entity.getInt("id") == waiter.getId())
                 .findFirst()
                 .ifPresent(entity -> {
@@ -50,7 +48,7 @@ public class WaiterComponent extends Component{
     }
 
     private static void moveEntityToPosition(Point2D position, Waiter waiter) {
-        FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
+        FXGL.getGameWorld().getEntitiesByType(TypeGame.WAITER).stream()
                 .filter(entity -> entity.getInt("id") == waiter.getId())
                 .findFirst()
                 .ifPresent(entity -> {
