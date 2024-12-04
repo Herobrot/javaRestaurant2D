@@ -314,6 +314,35 @@ public class RestaurantScene extends GameApplication {
         route.add(end);
         return route;
     }
+    private List<Point2D> routeToExit(Point2D start, Point2D end){
+        List<Point2D> route = new ArrayList<>();
+        int step = 4;
+        Point2D pos = start;
+        for (int i = 0; i < step; i++){
+            switch (i){
+                case 0:
+                    pos.add(-10, 0);
+                    route.add(pos);
+                    break;
+                case 1:
+                    pos = pos.add(0, 200);
+                    route.add(pos);
+                    break;
+                case 2:
+                    pos = end.add(0, -50);
+                    route.add(pos);
+                    break;
+                case 3:
+                    pos = pos.add(0, 50);
+                    route.add(pos);
+                    break;
+                default:
+                    System.out.print("[RUTADO-EXIT] El nodo " + i + " Esta en: " + pos);
+                    break;
+            }
+        }
+        return route;
+    }
 
 
     private void createChairs(){

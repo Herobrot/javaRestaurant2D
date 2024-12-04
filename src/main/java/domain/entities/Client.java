@@ -4,9 +4,12 @@ import com.almasb.fxgl.texture.Texture;
 import domain.components.ClientComponent;
 import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
     private Point2D position;
@@ -62,13 +65,12 @@ public class Client {
 
     public void eatAndLeave(RestaurantMonitor monitor) {
         try {
-
             System.out.println("Client " + id + " is eating at table " + tableNumber);
-            Thread.sleep(5000);
+            TimeUnit.SECONDS.sleep(2);
             System.out.println("Client " + id + " is done eating at table " + tableNumber);
             System.out.println("Client " + id + " notifying waiter that they are leaving.");
             monitor.leaveRestaurant(tableNumber);
-            this.state = ClientState.LEAVING;
+            Platform.runLater(() -> this.state = ClientState.LEAVING);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

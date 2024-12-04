@@ -58,8 +58,6 @@ public class RestaurantMonitor  extends Observable {
     public synchronized void leaveRestaurant(int tableNumber) {
        tables.get(tableNumber).setAvailable(true);
         System.out.println("Leaving restaurant " + tableNumber);
-
-
         if (!waitingQueue.isEmpty()) {
             Client nextClient = waitingQueue.poll();
             notifyClient(nextClient, tableNumber);
