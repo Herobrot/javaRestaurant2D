@@ -21,6 +21,8 @@ import utils.IClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class RestaurantScene extends GameApplication {
 
@@ -155,24 +157,40 @@ public class RestaurantScene extends GameApplication {
     }
 
     private void handleClient(Waiter waiter, Client client, int tableNumber) {
-        System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
-        WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
-        waiter.attendCustomer(client);
-        System.out.println("Requesting order from client " + client.getId());
-        WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150));
-        Chef chef = findAvailableChef();
-        Order order = waiter.serveClient(client, tableNumber, restaurantMonitor);
-        if(chef != null){
-            chef.startCooking(order);
-            ChefComponent.moveChefTo(chef, "Up", chef.getPosition().add(-25, -25));
-            chef.cook(restaurantMonitor);
-            ChefComponent.moveChefTo(chef, "Down", chef.getPosition().add(25, 25));
-            waiter.takeOrder(restaurantMonitor);
-            WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0));
-            WaiterComponent.moveWaiterTo(waiter, "Left", waiter.getPosition());
-        }
-
+        CompletableFuture.runAsync(() -> {
+                    System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
+                    WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
+                }).thenRunAsync(() -> pause(3)) // Pausa 3 segundos
+                .thenRunAsync(() -> {
+                    waiter.attendCustomer(client);
+                    System.out.println("Requesting order from client " + client.getId());
+                }).thenRunAsync(() -> pause(3)) // Pausa 3 segundos
+                .thenRunAsync(() -> WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150)))
+                .thenRunAsync(() -> pause(3)) // Pausa 3 segundos
+                .thenRunAsync(() -> {
+                    Chef chef = findAvailableChef();
+                    Order order = waiter.serveClient(client, tableNumber, restaurantMonitor);
+                    if (chef != null) {
+                        chef.startCooking(order);
+                        ChefComponent.moveChefTo(chef, "Up", chef.getPosition().add(-25, -25));
+                        chef.cook(restaurantMonitor);
+                        ChefComponent.moveChefTo(chef, "Down", chef.getPosition().add(25, 25));
+                        waiter.takeOrder(restaurantMonitor);
+                        WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0));
+                    }
+                });
     }
+
+    // Método para simular pausas (sin bloquear)
+    private void pause(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Pause interrupted: " + e.getMessage());
+        }
+    }
+
     private Chef findAvailableChef() {
         for (Chef chef : chefs) {
             if (chef.isAvailable()) {
