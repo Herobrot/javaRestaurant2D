@@ -21,8 +21,8 @@ public class WaiterComponent extends Component{
     public static void moveWaiterTo(Waiter waiter, String direction, Point2D position) {
         waiter.setDirection(calculateDirection(direction));
         updateTextureBasedOnDirection(calculateDirection(direction), waiter);
-        waiter.setPosition(position);
         moveEntityToPosition(position, waiter);
+        waiter.setPosition(position);
     }
 
     private static void updateTextureBasedOnDirection(Direction direction, Waiter waiter) {
@@ -41,7 +41,7 @@ public class WaiterComponent extends Component{
                 .filter(entity -> entity.getInt("id") == waiter.getId())
                 .findFirst()
                 .ifPresent(entity -> {
-                    System.out.println("Entre en " + waiter.getId() + " de actualizar textura");
+                    System.out.println("[MESERO] Entre en " + waiter.getId() + " de actualizar textura");
                     entity.getViewComponent().clearChildren();
                     entity.getViewComponent().addChild(newTexture);
                 });
@@ -53,7 +53,7 @@ public class WaiterComponent extends Component{
                 .findFirst()
                 .ifPresent(entity -> {
                     System.out.println("[MESERO] Entre en " + waiter.getId() + " de actualizar posicion");
-                    entity.setPosition(position);
+                    entity.getTransformComponent().setPosition(position);
                 });
     }
 

@@ -160,12 +160,17 @@ public class RestaurantScene extends GameApplication {
         CompletableFuture.runAsync(() -> {
                     System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
                     WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
+                    System.out.println("Estoy en el primer asyncrono");//Nunca se ejecuta
                 }).thenRunAsync(() -> pause(3)) // Pausa 3 segundos
                 .thenRunAsync(() -> {
                     waiter.attendCustomer(client);
                     System.out.println("Requesting order from client " + client.getId());
+                    System.out.println("Estoy en el SEGUNDO asyncrono"); //Nunca se ejecuta
                 }).thenRunAsync(() -> pause(3)) // Pausa 3 segundos
-                .thenRunAsync(() -> WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150)))
+                .thenRunAsync(() -> {
+                    WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150));
+                    System.out.println("[MESERO RESTAURANTE] Estoy en: " +waiter.getPosition());
+                })
                 .thenRunAsync(() -> pause(3)) // Pausa 3 segundos
                 .thenRunAsync(() -> {
                     Chef chef = findAvailableChef();

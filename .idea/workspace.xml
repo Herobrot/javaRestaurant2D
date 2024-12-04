@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/ChefComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/components/ChefComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/WaiterComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/components/WaiterComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Chef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
