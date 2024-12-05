@@ -1,6 +1,8 @@
 package domain.entities;
 
 import com.almasb.fxgl.texture.Texture;
+import domain.components.RecepcionistComponent;
+import domain.components.services.Direction;
 import javafx.geometry.Point2D;
 
 import java.util.concurrent.BlockingQueue;
@@ -12,16 +14,20 @@ public class Recepcionist {
     private boolean isAvailable;
     private Client currentCustomer;
     private final BlockingQueue<Order> readyOrders;
+    private RecepcionistComponent component;
+
 
     public Recepcionist(Point2D position) {
         this.position = position;
         this.isAvailable = true;
         this.currentCustomer = null;
         this.readyOrders = new LinkedBlockingDeque<>();
+        this.component = new RecepcionistComponent();
     }
 
     public synchronized boolean attendCustomer(Client customer) {
         if (isAvailable) {
+            this.component.updateTextureBasedOnDirection(Direction.RIGHT, this);
             isAvailable = false;
             currentCustomer = customer;
             customer.setState(Client.ClientState.WAITING_FOR_FOOD);
@@ -31,6 +37,7 @@ public class Recepcionist {
         return false;
     }
     public synchronized void finishService() {
+        this.component.updateTextureBasedOnDirection(Direction.DOWN, this);
         currentCustomer = null;
         isAvailable = true;
     }
