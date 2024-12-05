@@ -31,11 +31,11 @@ public class RestaurantScene extends GameApplication {
 
     private RestaurantMonitor restaurantMonitor;
     private List<Entity> tables;
+    private Recepcionist receptionist;
     private List<Chair> chairs;
     private List<Waiter> waiters;
     private List<Chef> chefs;
     private List<Client> waitingClients;
-    private Waiter receptionist;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -60,10 +60,16 @@ public class RestaurantScene extends GameApplication {
         restaurantMonitor = new RestaurantMonitor(RESTAURANT_CAPACITY, waiters.get(0));
         createTables();
         createChairs();
-        receptionist = new Waiter(0);
+        createRecepcionist();
         generateInitialClients();
         startGameLoop();
         System.out.println("Game initialized successfully");
+    }
+    private void createRecepcionist(){
+        Point2D position = new Point2D(290, 340);
+        SpawnData spawnData = new SpawnData(position);
+        receptionist = new Recepcionist(position);
+        FXGL.spawn("receptionist", spawnData);
     }
     private List<Chef> createChefs(int numChefs) {
         List<Chef> chefsList = new ArrayList<>();

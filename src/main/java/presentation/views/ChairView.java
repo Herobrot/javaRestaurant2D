@@ -81,6 +81,23 @@ public class ChairView implements EntityFactory {
                 .collidable()
                 .build();
     }
+    @Spawns("receptionist")
+    public Entity createRecepcionist(SpawnData data){
+        var recepcionistTexture = texture("waiterLookingDown.png").copy();
+        recepcionistTexture.setFitWidth(24);
+        recepcionistTexture.setFitHeight(24);
+
+        double adjustedX = data.getX();
+        double adjustedY = data.getY();
+
+        return FXGL.entityBuilder()
+                .from(data)
+                .at(adjustedX, adjustedY)
+                .type(TypeGame.RECEPCIONIST)
+                .viewWithBBox(recepcionistTexture)
+                .collidable()
+                .build();
+    }
 
     @Spawns("chef")
     public Entity createChef(SpawnData data) {

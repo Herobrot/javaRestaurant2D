@@ -7,8 +7,10 @@ package presentation.views;
 public enum TypeGame {
     Client, // Cliente
     WAITER, // Mesero
+    RECEPCIONIST, //Recepcionista
     CHEF, // Cocinero
     TABLE, // Mesa
     CHAIR, // Silla
     KITCHEN // Cocina
+
 }
