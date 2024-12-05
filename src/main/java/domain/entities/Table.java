@@ -8,6 +8,7 @@ public class Table {
     private int tableNumber;
     private boolean available;
     private List<Point2D> route;
+    private Chair chair;
 
     public Table(int tableNumber, boolean available) {
         this.tableNumber = tableNumber;
@@ -25,6 +26,8 @@ public class Table {
     public int getTableNumber() {
         return tableNumber;
     }
+    public void setChair(Chair chair) { this.chair = chair; }
+    public Chair getChair(){ return chair; }
 
     public void setRoute(List<Point2D> route) { this.route = route; }
 

@@ -124,7 +124,6 @@ public class RestaurantScene extends GameApplication {
     }
 
     private void updateGame() {
-        ClientComponent clientComponent = new ClientComponent();
         for (Waiter waiter : waiters) {
             if (!waiter.isAvailable()) {
                 continue;
@@ -133,13 +132,17 @@ public class RestaurantScene extends GameApplication {
             if (receptionist.isAvailable()) {
                 Client client = restaurantMonitor.getWaitingQueue().poll();
                 if (client != null) {
-                    int tableNumber = restaurantMonitor.enterRestaurant(client);
-                    System.out.println("Waiter " + waiter.getId() + " entered restaurant " + tableNumber);
+                    int tableNumber = restaurantMonitor.enterRestaurant(client); /*Aquí lo hace instantaneo
+                    Debería de cambiarse la lógica a como en el handleClient, donde si existe
+                    un pausado de 3 segundos en cada acción.
+                    */
+                    System.out.println("Client " + waiter.getId() + " entered restaurant " + tableNumber);
                     if (tableNumber != -1) {
                         receptionist.attendCustomer(client);
                         System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
                         restaurantMonitor.notifyObservers("Cliente " + client.getId() + " fue sentado en la mesa " + tableNumber);
-                        client.getComponent().moveClientAlongRoute(client, restaurantMonitor.getTable(tableNumber).getRoute());
+                        client.getComponent().moveClientOneStep(client);
+                        System.out.println("[CLIENTE] Me sente en la [SILLA]: "+ client.getPosition());
                         receptionist.finishService();
                         handleClient(waiter, client, tableNumber);
                     } else {
@@ -182,7 +185,7 @@ public class RestaurantScene extends GameApplication {
             }
         }).thenRunAsync(() -> {
             try {
-                WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(150, 150));
+                WaiterComponent.moveWaiterTo(waiter, "Up", new Point2D(250, 150));
                 System.out.println("[MESERO RESTAURANTE] Estoy en: " + waiter.getPosition());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -214,6 +217,7 @@ public class RestaurantScene extends GameApplication {
     // Método para simular pausas (sin bloquear)
     private void pause(int seconds) {
         try {
+            System.out.println("[PAUSA] ME PAUSE EN (" + seconds + ")");
             TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -251,7 +255,6 @@ public class RestaurantScene extends GameApplication {
     private void createTables() {
         System.out.println("Creating tables...");
         ChairView gameFactory = new ChairView();
-        Point2D clientStartPosition = new Point2D(330, 360);
         int startX = 131;
         int startY = 229;
         int spacing = 60;
@@ -269,37 +272,6 @@ public class RestaurantScene extends GameApplication {
         }
         System.out.println("Tables created: " + tables.size());
     }
-    private List<Point2D> routeToExit(Point2D start, Point2D end){
-        List<Point2D> route = new ArrayList<>();
-        int step = 4;
-        Point2D pos = start;
-        for (int i = 0; i < step; i++){
-            switch (i){
-                case 0:
-                    pos.add(-10, 0);
-                    route.add(pos);
-                    break;
-                case 1:
-                    pos = pos.add(0, 200);
-                    route.add(pos);
-                    break;
-                case 2:
-                    pos = end.add(0, -50);
-                    route.add(pos);
-                    break;
-                case 3:
-                    pos = pos.add(0, 50);
-                    route.add(pos);
-                    break;
-                default:
-                    System.out.print("[RUTADO-EXIT] El nodo " + i + " Esta en: " + pos);
-                    break;
-            }
-        }
-        return route;
-    }
-
-
     private void createChairs(){
         System.out.println("Creando sillas...");
         ChairView gameFactory = new ChairView();
@@ -310,12 +282,15 @@ public class RestaurantScene extends GameApplication {
         for (int i = 0; i < RESTAURANT_CAPACITY; i++) {
             int row = i / 4;
             int col = i % 4;
-            Chair chair = new Chair(i);
+            double x = startX + col * spacing;
+            double y = startY + row * spacing;
+            Chair chair = new Chair(i, x, y);
             chairs.add(chair);
-            SpawnData spawnData = new SpawnData(startX + col * spacing,
-                    startY + row * spacing)
+            SpawnData spawnData = new SpawnData(x,y)
                     .put("id", i);
             FXGL.spawn("chair", spawnData);
+            restaurantMonitor.getTable(i).setChair(chair);
+            System.out.println("[SILLA CREADA] Mi posicion es: " + restaurantMonitor.getTable(i).getChair().getPosition());
         }
     }
     private void initializeGameComponents() {

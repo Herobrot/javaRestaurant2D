@@ -24,7 +24,6 @@ public class ChairView implements EntityFactory {
                 .type(TypeGame.TABLE)
                 .at(adjustedX, adjustedY)
                 .viewWithBBox(tableTexture)
-                .collidable()
                 .build();
     }
 

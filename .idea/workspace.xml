@@ -7,7 +7,9 @@
     <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/ClientComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/components/ClientComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Chair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Chair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" afterDir="false" />
     </list>

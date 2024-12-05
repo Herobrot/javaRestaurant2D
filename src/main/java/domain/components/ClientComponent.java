@@ -7,6 +7,7 @@ import com.almasb.fxgl.texture.Texture;
 import domain.components.services.Direction;
 import domain.entities.Client;
 import domain.observer.IClientObserver;
+import javafx.animation.Interpolator;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import presentation.views.TypeGame;
@@ -54,38 +55,28 @@ public class ClientComponent extends Component {
 
     public void moveClientOneStep(Client client){
         if (client.getState() == Client.ClientState.WAITING_FOR_WAITER){
-            var posTo = client.getPosition().add(0, -50);
+            Point2D posTo = client.getPosition().add(0, -50);
             Direction direction = calculateDirection(client.getPosition(), posTo, client.getState());
             client.setDirection(direction);
             updateTextureBasedOnDirection(direction, client);
 
-            moveEntityToPosition(posTo, client);
-        }
-    }
-    public void moveClientAlongRoute(Client client, List<Point2D> route) {
-        for (int i = 0; i < route.size() - 1; i++) {
-            Point2D current = route.get(i);
-            Point2D next = route.get(i + 1);
-
-            Direction direction = calculateDirection(current, next, client.getState());
-            client.setDirection(direction);
-
-
-            updateTextureBasedOnDirection(direction, client);
-            client.setPosition(next);
-
-            moveEntityToPosition(next, client);
-            //El cliente va al primer nodo, dejando un espacio en la cola. Se pone el if
-            // ya qué cuando avance para el siguiente nodo, terminaría haciendo que los otros observando en cola avancen
-            // otro paso cuando aún no hay espacio.
-            if(i==0){
-                notifyDirectionChanged(client.getId(), direction);
-                notifyPositionChanged(client.getId(), next);
-            }
+            FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
+                    .filter(entity -> entity.getInt("id") == client.getId())
+                    .findFirst()
+                    .ifPresent(e -> {
+                        FXGL.animationBuilder()
+                                .onFinished(() -> updateTextureBasedOnDirection(Direction.UP, client))
+                                .duration(Duration.seconds(0.2))
+                                .interpolator(Interpolator.LINEAR)
+                                .translate(e)
+                                .from(client.getPosition())
+                                .to(posTo)
+                                .buildAndPlay();
+                    });
         }
     }
 
-    private static void updateTextureBasedOnDirection(Direction direction, Client client) {
+    private void updateTextureBasedOnDirection(Direction direction, Client client) {
         String textureFile = switch (direction) {
             case UP -> "clientLookingUp.png";
             case DOWN -> "clientLookingDown.png";
@@ -96,7 +87,7 @@ public class ClientComponent extends Component {
         Texture newTexture = FXGL.texture(textureFile).copy();
         newTexture.setFitWidth(24);
         newTexture.setFitHeight(24);
-
+        notifyDirectionChanged(client.getId(), direction);
         FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
                 .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
@@ -106,11 +97,59 @@ public class ClientComponent extends Component {
                 });
     }
 
-    private static void moveClientToTable(Client client) {
+    public void moveClientToTable(Client client) {
+        System.out.println("[CLIENTE] Me movi a la tabla");
+        Point2D chairPosition = client.getRoute();
+        Point2D clientPosition = client.getPosition();
+        Point2D firstIntermediatePosition = new Point2D(clientPosition.getX(), chairPosition.getY()+20);
+        Point2D secondIntermediatePosition = new Point2D(chairPosition.getX(), firstIntermediatePosition.getY());
+
         Entity e = FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
                 .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
                 .get();
 
+
+        FXGL.animationBuilder()
+                .duration(Duration.seconds(0.3))
+                .interpolator(Interpolator.LINEAR)
+                .onFinished(() -> {
+                    System.out.println("[ANIMATION-CLIENT] Me voy hacia UP");
+                    updateTextureBasedOnDirection(Direction.UP, client);
+                    client.setPosition(firstIntermediatePosition);
+                    notifyPositionChanged(client.getId(), firstIntermediatePosition);
+                })
+                .translate(e)
+                .from(clientPosition)
+                .to(firstIntermediatePosition)
+                .buildAndPlay();
+        FXGL.animationBuilder()
+                .duration(Duration.seconds(0.3))
+                .interpolator(Interpolator.LINEAR)
+                .onFinished(() -> {
+                    System.out.println("[ANIMATION-CLIENT] Me voy hacia LEFT");
+                    updateTextureBasedOnDirection(Direction.LEFT, client);
+                    client.setPosition(secondIntermediatePosition);
+                    notifyPositionChanged(client.getId(), secondIntermediatePosition);
+                })
+                .translate(e)
+                .from(firstIntermediatePosition)
+                .to(secondIntermediatePosition)
+                .buildAndPlay();
+        FXGL.animationBuilder()
+                .duration(Duration.seconds(0.1))
+                .interpolator(Interpolator.LINEAR)
+                .onFinished(() -> {
+                    System.out.println("[ANIMATION-CLIENT] Me voy hacia UP");
+                    updateTextureBasedOnDirection(Direction.UP, client);
+                    client.setPosition(chairPosition);
+                    notifyPositionChanged(client.getId(), chairPosition);
+                })
+                .translate(e)
+                .from(firstIntermediatePosition)
+                .to(chairPosition)
+                .buildAndPlay();
+        System.out.println("[ANIMATION-CLIENT] LLEGUE, Sentado de pana");
+        updateTextureBasedOnDirection(Direction.RIGHT, client);
     }
 }

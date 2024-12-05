@@ -46,6 +46,8 @@ public class RestaurantMonitor  extends Observable {
                 System.out.println("Entering restaurant " + i);
                 client.setTableNumber(i);
                 kitchenOrders.add(client);
+                client.setRoute(tables.get(i).getChair().getPosition());
+                client.getComponent().moveClientToTable(client);
                 tables.get(i).setAvailable(false);
                 return i;
             }
