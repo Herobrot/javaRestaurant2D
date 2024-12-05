@@ -29,18 +29,20 @@ public class ChairView implements EntityFactory {
     }
 
     @Spawns("chair")
-    public Entity createChair(double x, double y) {
+    public Entity createChair(SpawnData data) {
         var chairTexture = texture("chairToRight.png").copy();
         chairTexture.setFitWidth(13);
         chairTexture.setFitHeight(24);
 
-        double adjustedX = x - 30;
-        double adjustedY = y - 50;
+        double adjustedX = data.getX() - 30;
+        double adjustedY = data.getY() - 50;
+        int tableId = data.get("id");
 
         return FXGL.entityBuilder()
                 .type(TypeGame.CHAIR)
                 .at(adjustedX, adjustedY)
                 .viewWithBBox(chairTexture)
+                .with("id", tableId)
                 .build();
     }
     @Spawns("customer")

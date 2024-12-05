@@ -8,10 +8,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import domain.components.ChefComponent;
 import domain.components.ClientComponent;
 import domain.components.WaiterComponent;
-import domain.entities.Client;
-import domain.entities.Waiter;
-import domain.entities.Chef;
-import domain.entities.Order;
+import domain.entities.*;
 import domain.observer.ClientObserver;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
@@ -34,7 +31,7 @@ public class RestaurantScene extends GameApplication {
 
     private RestaurantMonitor restaurantMonitor;
     private List<Entity> tables;
-    private List<Entity> chairs;
+    private List<Chair> chairs;
     private List<Waiter> waiters;
     private List<Chef> chefs;
     private List<Client> waitingClients;
@@ -269,50 +266,8 @@ public class RestaurantScene extends GameApplication {
                     rowY);
             tables.add(table);
             FXGL.getGameWorld().addEntity(table);
-            Point2D tablePosition = new Point2D(startX + col * spacing, startY + row * spacing);
-            List<Point2D> route = calculateDirectRoute(clientStartPosition, tablePosition);
-            //Puede que el error de las posiciones con los clientes radique aquí
-            restaurantMonitor.setRouteTables(i, route);
         }
         System.out.println("Tables created: " + tables.size());
-    }
-    private List<Point2D> calculateRoute(Point2D start, Point2D end) {
-        List<Point2D> route = new ArrayList<>();
-
-        double step = 3; // Nodos
-        double deltaX = end.getX() - start.getX();
-        double deltaY = end.getY() - start.getY();
-        //Es MUY posible que el rutado de aquí sea el causante de que los clientes estén desalineados
-        for (double x = start.getX(); Math.abs(x - end.getX()) > step; x += Math.signum(deltaX) * step) {
-            Point2D pos = new Point2D(x, start.getY());
-            System.out.println("[RUTA] Mi posicion es: " + pos + " Voy en el [PASO]: " + step);
-            route.add(pos);
-        }
-
-        for (double y = start.getY(); Math.abs(y - end.getY()) > step; y += Math.signum(deltaY) * step) {
-            route.add(new Point2D(end.getX(), y));
-        }
-
-        route.add(end);
-
-        return route;
-    }
-
-    private List<Point2D> calculateDirectRoute(Point2D start, Point2D end) {
-        List<Point2D> route = new ArrayList<>();
-        double deltaX = end.getX() - start.getX();
-        double deltaY = end.getY() - start.getY();
-        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        double step = 3; // Node spacing
-
-        for (double t = 0; t <= 1; t += step / distance) {
-            double x = start.getX() + t * deltaX;
-            double y = start.getY() + t * deltaY;
-            route.add(new Point2D(x, y));
-        }
-
-        route.add(end);
-        return route;
     }
     private List<Point2D> routeToExit(Point2D start, Point2D end){
         List<Point2D> route = new ArrayList<>();
@@ -353,18 +308,15 @@ public class RestaurantScene extends GameApplication {
         int spacing = 60;
 
         for (int i = 0; i < RESTAURANT_CAPACITY; i++) {
-            System.out.println("Entre " + i+1 + " vez al for");
             int row = i / 4;
             int col = i % 4;
-            Entity chair = gameFactory.createChair(
-                    startX + col * spacing,
-                    startY + row * spacing);
-            System.out.println("Creé la entidad");
+            Chair chair = new Chair(i);
             chairs.add(chair);
-            System.out.println("Agregue a la lista");
-            FXGL.getGameWorld().addEntity(chair);
+            SpawnData spawnData = new SpawnData(startX + col * spacing,
+                    startY + row * spacing)
+                    .put("id", i);
+            FXGL.spawn("chair", spawnData);
         }
-        System.out.println("Sillas creadas: " + chairs.size());
     }
     private void initializeGameComponents() {
         System.out.println("Initializing game components...");

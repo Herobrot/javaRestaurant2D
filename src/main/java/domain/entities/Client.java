@@ -7,6 +7,7 @@ import domain.monitors.RestaurantMonitor;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +20,7 @@ public class Client {
     private ClientState state;
     private Texture texture;
     private ClientComponent component;
-    private List<Point2D> route;
+    private Point2D route;
 
     public enum ClientState {
         WAITING_FOR_WAITER,
@@ -47,9 +48,9 @@ public class Client {
         return tableNumber;
     }
 
-    public void setRoute(List<Point2D> route) { this.route = route; }
+    public void setRoute(Point2D route) { this.route = route; }
 
-    public List<Point2D> getRoute(){ return route; }
+    public Point2D getRoute(){ return route; }
 
     public void setState(ClientState state) {
         this.state = state;

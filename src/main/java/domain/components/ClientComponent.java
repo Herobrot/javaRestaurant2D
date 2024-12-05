@@ -1,12 +1,14 @@
 package domain.components;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
 import domain.components.services.Direction;
 import domain.entities.Client;
 import domain.observer.IClientObserver;
 import javafx.geometry.Point2D;
+import javafx.util.Duration;
 import presentation.views.TypeGame;
 
 import java.util.ArrayList;
@@ -104,10 +106,11 @@ public class ClientComponent extends Component {
                 });
     }
 
-    private static void moveEntityToPosition(Point2D position, Client client) {
-        FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
+    private static void moveClientToTable(Client client) {
+        Entity e = FXGL.getGameWorld().getEntitiesByType(TypeGame.Client).stream()
                 .filter(entity -> entity.getInt("id") == client.getId())
                 .findFirst()
-                .ifPresent(entity -> entity.setPosition(position));
+                .get();
+
     }
 }
