@@ -158,7 +158,7 @@ public class RestaurantScene extends GameApplication {
         CompletableFuture.runAsync(() -> {
             try {
                 System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
-                WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0));
+                WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0)); //Se mueve a los de la cola
                 System.out.println("Estoy en el primer asyncrono");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -206,7 +206,7 @@ public class RestaurantScene extends GameApplication {
                     chef.cook(restaurantMonitor);
                     ChefComponent.moveChefTo(chef, "Down", chef.getPosition().add(25, 25));
                     waiter.takeOrder(restaurantMonitor);
-                    WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0));
+                    WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(20, 0)); //Aquí SI se pone frente a los que se sentaron
                 }
             } catch (Exception e) {
                 e.printStackTrace();
