@@ -24,6 +24,7 @@ public class RecepcionistComponent extends Component {
                 .findFirst()
                 .ifPresent(entity -> {
                     System.out.println("[RECEPCIONISTA] Entre en actualizar textura");
+                    recepcionist.setTexture(newTexture);
                     entity.getViewComponent().clearChildren();
                     entity.getViewComponent().addChild(newTexture);
                 });

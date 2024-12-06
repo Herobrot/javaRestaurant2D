@@ -109,46 +109,45 @@ public class ClientComponent extends Component {
                 .findFirst()
                 .get();
 
-
+        System.out.println("[ANIMATION-CLIENT] Me voy hacia UP");
+        updateTextureBasedOnDirection(Direction.UP, client);
+        client.setPosition(chairPosition);
+        notifyPositionChanged(client.getId(), chairPosition);
         FXGL.animationBuilder()
-                .duration(Duration.seconds(0.3))
+                .duration(Duration.seconds(1))
                 .interpolator(Interpolator.LINEAR)
                 .onFinished(() -> {
-                    System.out.println("[ANIMATION-CLIENT] Me voy hacia UP");
-                    updateTextureBasedOnDirection(Direction.UP, client);
-                    client.setPosition(firstIntermediatePosition);
-                    notifyPositionChanged(client.getId(), firstIntermediatePosition);
+                    System.out.println("[ANIMATION-CLIENT] Me voy hacia LEFT");
+                    updateTextureBasedOnDirection(Direction.LEFT, client);
+                    FXGL.animationBuilder()
+                            .duration(Duration.seconds(1))
+                            .interpolator(Interpolator.LINEAR)
+                            .onFinished(() -> {
+                                System.out.println("[ANIMATION-CLIENT] Me voy hacia UP");
+                                updateTextureBasedOnDirection(Direction.UP, client);
+                                FXGL.animationBuilder()
+                                        .duration(Duration.seconds(0.3))
+                                        .interpolator(Interpolator.LINEAR)
+                                        .onFinished(() -> {
+                                            System.out.println("[ANIMATION-CLIENT] Me siento");
+                                            updateTextureBasedOnDirection(Direction.RIGHT, client);
+                                        })
+                                        .translate(e)
+                                        .from(firstIntermediatePosition)
+                                        .to(chairPosition)
+                                        .buildAndPlay();
+                            })
+                            .translate(e)
+                            .from(firstIntermediatePosition)
+                            .to(secondIntermediatePosition)
+                            .buildAndPlay();
                 })
                 .translate(e)
                 .from(clientPosition)
                 .to(firstIntermediatePosition)
                 .buildAndPlay();
-        FXGL.animationBuilder()
-                .duration(Duration.seconds(0.3))
-                .interpolator(Interpolator.LINEAR)
-                .onFinished(() -> {
-                    System.out.println("[ANIMATION-CLIENT] Me voy hacia LEFT");
-                    updateTextureBasedOnDirection(Direction.LEFT, client);
-                    client.setPosition(secondIntermediatePosition);
-                    notifyPositionChanged(client.getId(), secondIntermediatePosition);
-                })
-                .translate(e)
-                .from(firstIntermediatePosition)
-                .to(secondIntermediatePosition)
-                .buildAndPlay();
-        FXGL.animationBuilder()
-                .duration(Duration.seconds(0.1))
-                .interpolator(Interpolator.LINEAR)
-                .onFinished(() -> {
-                    System.out.println("[ANIMATION-CLIENT] Me voy hacia UP");
-                    updateTextureBasedOnDirection(Direction.UP, client);
-                    client.setPosition(chairPosition);
-                    notifyPositionChanged(client.getId(), chairPosition);
-                })
-                .translate(e)
-                .from(firstIntermediatePosition)
-                .to(chairPosition)
-                .buildAndPlay();
+
+
         System.out.println("[ANIMATION-CLIENT] LLEGUE, Sentado de pana");
         updateTextureBasedOnDirection(Direction.RIGHT, client);
     }
