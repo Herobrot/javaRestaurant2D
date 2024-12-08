@@ -129,6 +129,35 @@ public class RestaurantScene extends GameApplication {
         FXGL.run(() -> updateGame(), Duration.seconds(5));
     }
 
+    private void updateGame1() {
+        for (Waiter waiter : waiters) {
+            if (!waiter.isAvailable()) {
+                continue;
+            }
+
+            if (receptionist.isAvailable()) {
+                Client client = restaurantMonitor.getWaitingQueue().poll();
+                if (client != null) {
+                    int tableNumber = restaurantMonitor.enterRestaurant(client); /*Aquí lo hace instantaneo
+                Debería de cambiarse la lógica a como en el handleClient, donde si existe
+                un pausado de 3 segundos en cada acción.
+                */
+                    System.out.println("Client " + waiter.getId() + " entered restaurant " + tableNumber);
+                    if (tableNumber != -1) {
+                        receptionist.attendCustomer(client);
+                        receptionist.finishService();
+                        System.out.println("Client " + client.getId() + " seated at table " + tableNumber);
+                        restaurantMonitor.notifyObservers("Cliente " + client.getId() + " fue sentado en la mesa " + tableNumber);
+                        handleClient(waiter, client, tableNumber);
+                    } else {
+                        restaurantMonitor.notifyObservers("Cliente " + client.getId() + " fue puesto en espera.");
+                        System.out.println("No tables available for client " + client.getId() + ". Adding to waiting list.");
+                    }
+                }
+            }
+        }
+    }
+
     private void updateGame() {
         for (Waiter waiter : waiters) {
             if (!waiter.isAvailable()) {
@@ -159,6 +188,9 @@ public class RestaurantScene extends GameApplication {
             }
         }
     }
+
+
+
 
     private void handleClient(Waiter waiter, Client client, int tableNumber) {
         CompletableFuture.runAsync(() -> {

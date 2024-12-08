@@ -112,4 +112,6 @@ public class Waiter {
     public Texture getTexture() {
         return texture;
     }
+    public Client getCurrentCustomer() { return currentCustomer; }
+    public void setCurrentCustomer(Client currentCustomer){ this.currentCustomer = currentCustomer; }
 }
