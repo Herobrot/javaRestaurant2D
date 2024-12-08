@@ -196,7 +196,7 @@ public class RestaurantScene extends GameApplication {
         CompletableFuture.runAsync(() -> {
             try {
                 System.out.println("Waiter " + waiter.getId() + " handling client " + client.getId() + " at table " + tableNumber);
-                WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(50, 0)); //Se mueve a los de la cola
+                WaiterComponent.moveWaiterTo(waiter, "Left", client.getPosition().add(40, 0)); //Se mueve a los de la cola
                 System.out.println("Estoy en el primer asyncrono");
             } catch (Exception e) {
                 e.printStackTrace();

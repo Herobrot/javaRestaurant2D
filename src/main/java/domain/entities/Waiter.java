@@ -1,6 +1,7 @@
 package domain.entities;
 
 import com.almasb.fxgl.texture.Texture;
+import domain.components.WaiterComponent;
 import domain.components.services.Direction;
 import domain.monitors.RestaurantMonitor;
 import javafx.application.Platform;
@@ -17,6 +18,7 @@ public class Waiter {
     private boolean isAvailable;
     private Client currentCustomer;
     private final BlockingQueue<Order> readyOrders;
+    private WaiterComponent waiterComponent;
 
     // Constructor
     public Waiter(int id) {
