@@ -1,5 +1,4 @@
 package presentation.scenes;
-
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -11,7 +10,6 @@ import domain.components.WaiterComponent;
 import domain.entities.*;
 import domain.observer.ClientObserver;
 import javafx.geometry.Point2D;
-import javafx.util.Duration;
 import domain.monitors.RestaurantMonitor;
 import presentation.views.ChairView;
 import utils.IClientLogger;
@@ -65,68 +63,11 @@ public class RestaurantScene extends GameApplication {
         startGameLoop();
         System.out.println("Game initialized successfully");
     }
-    private void createRecepcionist(){
-        Point2D position = new Point2D(290, 340);
-        SpawnData spawnData = new SpawnData(position);
-        receptionist = new Recepcionist(position);
-        FXGL.spawn("receptionist", spawnData);
+    public static void main(String[] args) {
+        launch(args);
     }
-    private List<Chef> createChefs(int numChefs) {
-        List<Chef> chefsList = new ArrayList<>();
-        for (int i = 0; i < numChefs; i++) {
-            Chef chef = new Chef(i);
-            chef.setPosition(new Point2D(220 + i * 30, 100));
-            chefsList.add(chef);
-            SpawnData spawnData = new SpawnData(220 + i * 30, 100)
-                    .put("id", i);
-
-            FXGL.spawn("chef", spawnData);
-            System.out.println("Chef created: " + chef.getId());
-        }
-        return chefsList;
-    }
-
-    private void generateInitialClients() {
-        System.out.println("Generating initial clients...");
-        for (int i = 0; i < 25; i++) {
-            Client newClient = new Client(i);
-            waitingClients.add(newClient);
-            ClientComponent clientComponent = new ClientComponent();
-            IClientLogger clientLogger = new IClientLogger();
-            ClientObserver clientObserver = new ClientObserver(newClient);
-            restaurantMonitor.addObserver(clientObserver);
-            clientComponent.addObserver(clientLogger);
-            newClient.setComponent(clientComponent);
-            boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
-            if (added) {
-                SpawnData spawnData = new SpawnData(310, 340 + i * 25)
-                        .put("id", i);
-                FXGL.spawn("customer", spawnData);
-                newClient.setPosition(new Point2D(310, 340 + i * 25));
-                System.out.println("Initial client added: " + newClient.getId());
-            } else {
-                System.out.println("Failed to add initial client " + newClient.getId() + " to waiting queue");
-            }
-        }
-    }
-
-
-    private List<Waiter> createWaiters(int numWaiters) {
-        List<Waiter> waitersList = new ArrayList<>();
-        for (int i = 1; i < numWaiters+1; i++) {
-            Waiter waiter = new Waiter(i);
-            waiter.setPosition(new Point2D(390 + i * 25, 330));
-            waitersList.add(waiter);
-            SpawnData spawnData = new SpawnData(390 + i * 25, 330)
-                    .put("id", i);
-
-            FXGL.spawn("waiter", spawnData);
-        }
-        return waitersList;
-    }
-
     private void startGameLoop() {
-        FXGL.run(() -> updateGame(), Duration.seconds(5));
+        updateGame();
     }
 
     private void updateGame() {
@@ -138,10 +79,7 @@ public class RestaurantScene extends GameApplication {
             if (receptionist.isAvailable()) {
                 Client client = restaurantMonitor.getWaitingQueue().poll();
                 if (client != null) {
-                    int tableNumber = restaurantMonitor.enterRestaurant(client); /*Aquí lo hace instantaneo
-                    Debería de cambiarse la lógica a como en el handleClient, donde si existe
-                    un pausado de 3 segundos en cada acción.
-                    */
+                    int tableNumber = restaurantMonitor.enterRestaurant(client);
                     System.out.println("Client " + waiter.getId() + " entered restaurant " + tableNumber);
                     if (tableNumber != -1) {
                         receptionist.attendCustomer(client);
@@ -219,8 +157,6 @@ public class RestaurantScene extends GameApplication {
             }
         });
     }
-
-    // Método para simular pausas (sin bloquear)
     private void pause(int seconds) {
         try {
             System.out.println("[PAUSA] ME PAUSE EN (" + seconds + ")");
@@ -240,8 +176,65 @@ public class RestaurantScene extends GameApplication {
         return null;
     }
 
-    public static void main(String[] args) {
-        launch(args);
+
+    private void createRecepcionist(){
+        Point2D position = new Point2D(290, 340);
+        SpawnData spawnData = new SpawnData(position);
+        receptionist = new Recepcionist(position);
+        FXGL.spawn("receptionist", spawnData);
+    }
+    private List<Chef> createChefs(int numChefs) {
+        List<Chef> chefsList = new ArrayList<>();
+        for (int i = 0; i < numChefs; i++) {
+            Chef chef = new Chef(i);
+            chef.setPosition(new Point2D(220 + i * 30, 100));
+            chefsList.add(chef);
+            SpawnData spawnData = new SpawnData(220 + i * 30, 100)
+                    .put("id", i);
+
+            FXGL.spawn("chef", spawnData);
+            System.out.println("Chef created: " + chef.getId());
+        }
+        return chefsList;
+    }
+
+    private void generateInitialClients() {
+        System.out.println("Generating initial clients...");
+        for (int i = 0; i < 25; i++) {
+            Client newClient = new Client(i);
+            waitingClients.add(newClient);
+            ClientComponent clientComponent = new ClientComponent();
+            IClientLogger clientLogger = new IClientLogger();
+            ClientObserver clientObserver = new ClientObserver(newClient);
+            restaurantMonitor.addObserver(clientObserver);
+            clientComponent.addObserver(clientLogger);
+            newClient.setComponent(clientComponent);
+            boolean added = restaurantMonitor.getWaitingQueue().offer(newClient);
+            if (added) {
+                SpawnData spawnData = new SpawnData(310, 340 + i * 25)
+                        .put("id", i);
+                FXGL.spawn("customer", spawnData);
+                newClient.setPosition(new Point2D(310, 340 + i * 25));
+                System.out.println("Initial client added: " + newClient.getId());
+            } else {
+                System.out.println("Failed to add initial client " + newClient.getId() + " to waiting queue");
+            }
+        }
+    }
+
+
+    private List<Waiter> createWaiters(int numWaiters) {
+        List<Waiter> waitersList = new ArrayList<>();
+        for (int i = 1; i < numWaiters+1; i++) {
+            Waiter waiter = new Waiter(i);
+            waiter.setPosition(new Point2D(390 + i * 25, 330));
+            waitersList.add(waiter);
+            SpawnData spawnData = new SpawnData(390 + i * 25, 330)
+                    .put("id", i);
+
+            FXGL.spawn("waiter", spawnData);
+        }
+        return waitersList;
     }
 
     private void createBackground() {
