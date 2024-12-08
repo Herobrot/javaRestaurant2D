@@ -114,7 +114,7 @@ public class ClientComponent extends Component {
         client.setPosition(chairPosition);
         notifyPositionChanged(client.getId(), chairPosition);
         FXGL.animationBuilder()
-                .duration(Duration.seconds(1))
+                .duration(Duration.seconds(1.5))
                 .interpolator(Interpolator.LINEAR)
                 .onFinished(() -> {
                     System.out.println("[ANIMATION-CLIENT] Me voy hacia LEFT");
@@ -133,7 +133,7 @@ public class ClientComponent extends Component {
                                             updateTextureBasedOnDirection(Direction.RIGHT, client);
                                         })
                                         .translate(e)
-                                        .from(firstIntermediatePosition)
+                                        .from(secondIntermediatePosition)
                                         .to(chairPosition)
                                         .buildAndPlay();
                             })
