@@ -18,18 +18,19 @@ public class Table extends Component {
     }
 
     public synchronized void release() {
-        System.out.println("Liberando mesa " + number);
+        System.out.println("Freeing table " + number);
+
         this.currentCustomer = null;
         this.isOccupied = false;
     }
 
     public synchronized void setCurrentCustomer(Customer customer) {
         synchronized (tableLock) {
-            System.out.println("Asignando cliente a mesa " + number);
+            System.out.println("Assigning customer to table " + number);
             this.currentCustomer = customer;
             this.isOccupied = (customer != null);
             if (customer != null) {
-                System.out.println("Mesa " + number + " ocupada por cliente");
+                System.out.println("Table " + number + " occupied by customer");
             }
         }
     }
@@ -37,9 +38,9 @@ public class Table extends Component {
     public synchronized Customer getCurrentCustomer() {
         synchronized (tableLock) {
             if (currentCustomer == null) {
-                System.out.println("Advertencia: Solicitando cliente de mesa " + number + " vacía");
+                System.out.println("Warning: Requesting customer from empty table " + number);
             } else {
-                System.out.println("Obteniendo cliente de mesa " + number);
+                System.out.println("Getting customer from table " + number);
             }
             return currentCustomer;
         }

@@ -47,7 +47,7 @@ public class Cook implements Runnable, observers.OrderObserver {
 
     @Override
     public void onOrderReady(Order order) {
-        System.out.println("La orden para la mesa " + order.getTableNumber() + " está lista.");
+        System.out.println("The order for table " + order.getTableNumber() + " is ready.");
         orderQueueMonitor.notifyWaitersAboutReadyOrder(order);
     }
 

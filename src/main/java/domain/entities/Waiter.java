@@ -116,7 +116,8 @@ public class Waiter extends Component {
         synchronized (stateLock) {
             isBusy = true;
             state = WaiterState.DELIVERING_ORDER;
-            System.out.println("Mesero entregando orden a mesa " + order.getTableNumber());
+            System.out.println("Waiter delivering order to table " + order.getTableNumber());
+
 
             Point2D tablePos = calculateTablePosition(order.getTableNumber());
             movement.moveTo(tablePos, () -> {
@@ -125,10 +126,10 @@ public class Waiter extends Component {
                     if (table != null && table.getNumber() == order.getTableNumber()) {
                         Customer customer = table.getCurrentCustomer();
                         if (customer != null) {
-                            System.out.println("Mesero encontró cliente en mesa " + order.getTableNumber());
+                            System.out.println("Waiter found customer at table " + order.getTableNumber());
                             customer.startEating();
                         } else {
-                            System.out.println("Error: No se encontró cliente en mesa " + order.getTableNumber());
+                            System.out.println("Error: Customer not found at table " + order.getTableNumber());
                         }
                         break;
                     }
@@ -148,11 +149,10 @@ public class Waiter extends Component {
         );
     }
 
-    // Método para que el camarero reciba la notificación de una orden lista
     public void notifyOrderReady(Order order) {
         synchronized (stateLock) {
             if (!isBusy) {
-                System.out.println("La orden de la mesa " + order.getTableNumber() + " está lista para ser entregada.");
+                System.out.println("The order for table " + order.getTableNumber() + " is ready to be delivered.");
                 deliverOrder(order);
             }
         }

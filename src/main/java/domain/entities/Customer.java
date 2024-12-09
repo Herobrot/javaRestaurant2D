@@ -97,7 +97,7 @@ public class Customer extends Component {
 
     public void assignTable(int tableNumber) {
         synchronized (stateLock) {
-            System.out.println("Cliente " + id + " recibiendo asignación de mesa " + tableNumber);
+            System.out.println("Customer " + id + " receiving table assignment " + tableNumber);
             this.tableNumber = tableNumber;
             state = CustomerState.MOVING_TO_TABLE;
             Point2D tablePos = calculateTablePosition(tableNumber);
@@ -106,7 +106,7 @@ public class Customer extends Component {
             for (Entity tableEntity : tables) {
                 Table table = tableEntity.getComponent(Table.class);
                 if (table != null && table.getNumber() == tableNumber) {
-                    System.out.println("Cliente " + id + " asignado a mesa " + tableNumber);
+                    System.out.println("Customer " + id + " assigned to table " + tableNumber);
                     table.setCurrentCustomer(this);
                     break;
                 }
@@ -119,7 +119,7 @@ public class Customer extends Component {
                         isWaitingForTable = false;
                     }
                     state = CustomerState.WAITING_FOR_WAITER;
-                    System.out.println("Cliente " + id + " esperando al mesero en mesa " + tableNumber);
+                    System.out.println("Customer " + id + " waiting for the waiter at table " + tableNumber);
                     notifyWaiter();
                 }
             });
@@ -129,11 +129,11 @@ public class Customer extends Component {
     public void startEating() {
         synchronized (stateLock) {
             if (state != CustomerState.WAITING_FOR_FOOD) {
-                System.out.println("Error: Cliente " + id + " intentando comer en estado incorrecto: " + state);
+                System.out.println("Error: Customer " + id + " attempting to eat in an incorrect state: " + state);
                 return;
             }
 
-            System.out.println("Cliente " + id + " comenzando a comer en mesa " + tableNumber);
+            System.out.println("Customer " + id + " starting to eat at table " + tableNumber);
             state = CustomerState.EATING;
             customerStats.decrementWaitingForFood();
             customerStats.incrementEating();
@@ -145,19 +145,19 @@ public class Customer extends Component {
                             GameConfig.MIN_EATING_TIME,
                             GameConfig.MAX_EATING_TIME
                     );
-                    System.out.println("Cliente " + id + " comerá por " + eatingTime + "ms");
+                    System.out.println("Customer " + id + " will eat for " + eatingTime + "ms");
                     Thread.sleep(eatingTime);
 
                     synchronized (stateLock) {
                         if (state == CustomerState.EATING) {
-                            System.out.println("Cliente " + id + " terminó de comer, procediendo a salir");
+                            System.out.println("Customer " + id + " finished eating, proceeding to leave");
                             updateTexture(DirectionsState.DOWN);
                             leaveRestaurant();
                         }
                     }
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    System.out.println("Cliente " + id + " interrumpido mientras comía");
+                    System.out.println("Customer " + id + " was interrupted while eating");
                 }
             });
             eatingThread.start();
@@ -175,7 +175,7 @@ public class Customer extends Component {
                 for (Entity tableEntity : tables) {
                     Table table = tableEntity.getComponent(Table.class);
                     if (table != null && table.getNumber() == tableNumber) {
-                        System.out.println("Cliente " + id + " liberando mesa " + tableNumber);
+                        System.out.println("Customer " + id + " freeing table " + tableNumber);
                         table.release();
                         break;
                     }
@@ -189,7 +189,7 @@ public class Customer extends Component {
             movement.moveTo(exitPos, () ->
                     Platform.runLater(() -> {
                         synchronized (stateLock) {
-                            System.out.println("Cliente " + id + " abandonando el restaurante");
+                            System.out.println("Customer " + id + " leaving the restaurant");
                             entity.removeFromWorld();
                         }
                     })
@@ -266,7 +266,7 @@ public class Customer extends Component {
 
     private void notifyWaiter() {
         synchronized (stateLock) {
-            System.out.println("Cliente " + id + " notificando al mesero para ordenar");
+            System.out.println("Customer " + id + " notifying the waiter to order");
             state = CustomerState.WAITING_FOR_FOOD;
             customerStats.incrementWaitingForFood();
             customerQueueMonitor.addCustomer(this, tableNumber);

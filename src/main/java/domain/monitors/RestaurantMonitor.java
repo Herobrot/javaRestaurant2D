@@ -41,7 +41,6 @@ public class RestaurantMonitor {
         try {
             if (tableNumber >= 0 && tableNumber < tables.length) {
                 tables[tableNumber] = true;
-                System.out.println("Mesa " + tableNumber + " marcada como ocupada en monitor");
             }
         } finally {
             lock.unlock();
@@ -54,7 +53,6 @@ public class RestaurantMonitor {
             if (tableNumber >= 0 && tableNumber < tables.length) {
                 tables[tableNumber] = false;
                 tableAssignments.remove(tableNumber);
-                System.out.println("Mesa " + tableNumber + " liberada en monitor");
                 tableAvailable.signalAll();
             }
         } finally {
