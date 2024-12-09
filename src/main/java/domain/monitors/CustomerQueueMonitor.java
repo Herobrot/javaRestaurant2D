@@ -3,13 +3,10 @@ package domain.monitors;
 import domain.entities.Customer;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class CustomerQueueMonitor {
     private final Queue<CustomerRequest> waitingCustomers;
-    private final ReentrantLock lock;
-    private final Condition customerAvailable;
+
 
     public static class CustomerRequest {
         public final Customer customer;
@@ -25,38 +22,23 @@ public class CustomerQueueMonitor {
 
     public CustomerQueueMonitor() {
         waitingCustomers = new LinkedList<>();
-        lock = new ReentrantLock();
-        customerAvailable = lock.newCondition();
     }
 
-    public void addCustomer(Customer customer, int tableNumber) {
-        lock.lock();
-        try {
-            waitingCustomers.add(new CustomerRequest(customer, tableNumber));
-            customerAvailable.signal();
-        } finally {
-            lock.unlock();
-        }
+
+    public synchronized void addCustomer(Customer customer, int tableNumber) {
+        waitingCustomers.add(new CustomerRequest(customer, tableNumber));
+        notify();
     }
 
-    public CustomerRequest getNextCustomer() throws InterruptedException {
-        lock.lock();
-        try {
-            while (waitingCustomers.isEmpty()) {
-                customerAvailable.await();
-            }
-            return waitingCustomers.poll();
-        } finally {
-            lock.unlock();
+    public synchronized CustomerRequest getNextCustomer() throws InterruptedException {
+        while (waitingCustomers.isEmpty()) {
+            wait();
         }
+        return waitingCustomers.poll();
     }
 
-    public boolean hasWaitingCustomers() {
-        lock.lock();
-        try {
-            return !waitingCustomers.isEmpty();
-        } finally {
-            lock.unlock();
-        }
+
+    public synchronized boolean hasWaitingCustomers() {
+        return !waitingCustomers.isEmpty();
     }
 }
