@@ -1,4 +1,4 @@
-package core;
+package application;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
@@ -18,14 +18,13 @@ import javafx.util.Duration;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
-public class RestaurantGameEngine {
+public class RestaurantGame {
     private final GameWorld gameWorld;
     private final CustomerStats customerStats;
     private final RestaurantMonitor restaurantMonitor;
@@ -38,7 +37,7 @@ public class RestaurantGameEngine {
     private final PoissonDistribution poissonDistribution;
     private Entity receptionistEntity;
 
-    public RestaurantGameEngine(GameWorld gameWorld, CustomerStats customerStats) {
+    public RestaurantGame(GameWorld gameWorld, CustomerStats customerStats) {
         this.gameWorld = gameWorld;
         this.customerStats = customerStats;
         this.restaurantMonitor = new RestaurantMonitor();

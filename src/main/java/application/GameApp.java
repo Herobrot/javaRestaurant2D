@@ -3,13 +3,12 @@ package application;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import utils.GameConfig;
-import core.RestaurantGameEngine;
 import domain.models.CustomerStats;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameApp extends GameApplication {
-    private RestaurantGameEngine gameEngine;
+    private RestaurantGame gameEngine;
 
     private CustomerStats customerStats;
 
@@ -25,7 +24,7 @@ public class GameApp extends GameApplication {
     protected void initGame() {
         getGameWorld().addEntityFactory(new GameFactory());
         customerStats = new CustomerStats();
-        gameEngine = new RestaurantGameEngine(getGameWorld(), customerStats);
+        gameEngine = new RestaurantGame(getGameWorld(), customerStats);
         setupGame();
     }
 

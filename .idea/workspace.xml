@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/GameApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/GameApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Cook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Cook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/OrderQueueMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/OrderQueueMonitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/observer/ClientObserver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/observer/IClientObserver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/observer/Observable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/observer/Observer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/factories/TableFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/factories/TableFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/GameConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/GameConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/IClientLogger.java" beforeDir="false" />
-    </list>
+    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +104,7 @@
       <updated>1732821983779</updated>
       <workItem from="1732839102738" duration="1629000" />
       <workItem from="1733704064005" duration="800000" />
-      <workItem from="1733704962859" duration="4802000" />
+      <workItem from="1733704962859" duration="5673000" />
     </task>
     <task id="LOCAL-00001" summary="wip: start with logic for client,waiter,chef and order">
       <option name="closed" value="true" />
@@ -166,12 +153,16 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="6888b278-7664-4ff9-b641-8267962a404c">
           <value>
             <State>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -190,6 +181,7 @@
                   </entry>
                 </map>
               </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
             </State>
           </value>
         </entry>
@@ -198,11 +190,6 @@
             <State />
           </value>
         </entry>
-      </map>
-    </option>
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
       </map>
     </option>
   </component>
