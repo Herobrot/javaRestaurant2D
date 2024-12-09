@@ -1,119 +1,150 @@
 package domain.entities;
 
-import com.almasb.fxgl.texture.Texture;
-import domain.components.WaiterComponent;
-import domain.components.services.Direction;
-import domain.monitors.RestaurantMonitor;
-import javafx.application.Platform;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.component.Component;
+import components.MovementComponent;
+import domain.entities.Customer;
+import domain.entities.Table;
+import domain.models.Order;
+import domain.monitors.OrderQueueMonitor;
+import domain.monitors.CustomerQueueMonitor;
+import utils.GameConfig;
 import javafx.geometry.Point2D;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+public class Waiter extends Component {
+    private static final AtomicInteger orderIdGenerator = new AtomicInteger(0);
+    private final Object stateLock = new Object();
+    private final OrderQueueMonitor orderQueueMonitor;
+    private final CustomerQueueMonitor customerQueueMonitor;
+    private final Point2D restPosition;
+    private Point2D targetPosition;
+    private boolean isMoving = false;
+    private boolean isBusy = false;
+    private WaiterState state = WaiterState.RESTING;
+    private static final double SPEED = GameConfig.WAITER_SPEED;
+    private final List<Entity> tables;
+    private MovementComponent movement;
 
-public class Waiter {
-    private Point2D position;
-    private Direction direction;
-    private Texture texture;
-    private final int id;
-    private boolean isAvailable;
-    private Client currentCustomer;
-    private final BlockingQueue<Order> readyOrders;
-    private WaiterComponent waiterComponent;
-
-    // Constructor
-    public Waiter(int id) {
-        this.id = id;
-        this.isAvailable = true;
-        this.currentCustomer = null;
-        this.readyOrders = new LinkedBlockingDeque<>();
+    public enum WaiterState {
+        RESTING,
+        MOVING_TO_TABLE,
+        TAKING_ORDER,
+        MOVING_TO_KITCHEN,
+        DELIVERING_ORDER,
+        RETURNING_TO_REST
     }
 
-    public synchronized boolean attendCustomer(Client customer) {
-        if (isAvailable) {
-            isAvailable = false;
-            currentCustomer = customer;
-            customer.setState(Client.ClientState.WAITING_FOR_FOOD);
-            System.out.println("Atendi el cliente " + customer.getId());
-            return true;
-        }
-        return false;
+    public Waiter(int id, OrderQueueMonitor orderQueueMonitor, CustomerQueueMonitor customerQueueMonitor,
+                  Point2D restPosition, List<Entity> tables) {
+        this.orderQueueMonitor = orderQueueMonitor;
+        this.customerQueueMonitor = customerQueueMonitor;
+        this.restPosition = restPosition;
+        this.tables = tables;
     }
 
-    public Order serveClient(Client client, int tableNumber, RestaurantMonitor monitor) {
-        isAvailable = false;
-        System.out.println("Mesero " + id + " Getting to client " + client.getId() + " on the table " + tableNumber);
-        Order order = new Order(client.getId(), tableNumber);
+    @Override
+    public void onAdded() {
+        movement = entity.getComponent(MovementComponent.class);
+        entity.setPosition(restPosition);
+        startWaiterBehavior();
+    }
+
+    private void startWaiterBehavior() {
         new Thread(() -> {
-            try {
-                Thread.sleep(2000);
-                monitor.getOrderBuffer().addOrder(order);
-                System.out.println("Order created: " + order.getOrderId() + " by client " + client.getId());
-
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            } finally {
-                isAvailable = true;
-            }
-        }).start();
-        return order;
-    }
-
-    public synchronized void finishService() {
-        currentCustomer = null;
-        isAvailable = true;
-    }
-
-    public synchronized void takeOrder(RestaurantMonitor monitor) {
-        new Thread(() -> {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    Order order = readyOrders.take();
-                    System.out.println("Waiter " + id + " took order " + order.getOrderId() + " for client " + order.getCustomerId());
-                    System.out.println("Waiter " + id + " delivered order " + order.getOrderId() + " to client " + order.getCustomerId());
-                    Client client  = monitor.notifyClientFoodReady(order);
-                    if(client != null) {
-                        Platform.runLater(() -> {
-                            client.eatAndLeave(monitor);
-                        });
+                    synchronized (stateLock) {
+                        if (!isBusy) {
+                            // Primero intentar entregar órdenes listas
+                            if (!deliverReadyOrders()) {
+                                // Si no hay órdenes para entregar, atender nuevos clientes
+                                if (customerQueueMonitor.hasWaitingCustomers()) {
+                                    CustomerQueueMonitor.CustomerRequest request = customerQueueMonitor.getNextCustomer();
+                                    if (request != null) {
+                                        isBusy = true;
+                                        serveCustomer(request.customer, request.tableNumber);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    isAvailable = true;
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
+                    break;
                 }
             }
         }).start();
     }
 
-    public void addReadyOrder(Order order) {
-        System.out.println("Waiter " + id + " adding ready order " + order.getOrderId() + "by client " + order.getCustomerId());
-        readyOrders.offer(order);
+    private boolean deliverReadyOrders() throws InterruptedException {
+        for (Entity tableEntity : tables) {
+            Table table = tableEntity.getComponent(Table.class);
+            if (table != null) {
+                Order readyOrder = orderQueueMonitor.checkReadyOrder(table.getNumber());
+                if (readyOrder != null) {
+                    deliverOrder(readyOrder);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public boolean isAvailable(){
-        return isAvailable;
+    private void serveCustomer(Customer customer, int tableNumber) {
+        state = WaiterState.MOVING_TO_TABLE;
+        Point2D tablePos = calculateTablePosition(tableNumber);
+
+        movement.moveTo(tablePos, () -> {
+            state = WaiterState.TAKING_ORDER;
+            Order order = new Order(orderIdGenerator.incrementAndGet(), tableNumber);
+
+            Point2D kitchenPos = new Point2D(GameConfig.KITCHEN_X - 50, GameConfig.KITCHEN_Y);
+            movement.moveTo(kitchenPos, () -> {
+                orderQueueMonitor.addOrder(order);
+                synchronized (stateLock) {
+                    state = WaiterState.RESTING;
+                    isBusy = false;
+                }
+            });
+        });
     }
 
-    public int getId(){
-        return id;
+    private void deliverOrder(Order order) {
+        synchronized (stateLock) {
+            isBusy = true;
+            state = WaiterState.DELIVERING_ORDER;
+            System.out.println("Mesero entregando orden a mesa " + order.getTableNumber());
+
+            Point2D tablePos = calculateTablePosition(order.getTableNumber());
+            movement.moveTo(tablePos, () -> {
+                for (Entity tableEntity : tables) {
+                    Table table = tableEntity.getComponent(Table.class);
+                    if (table != null && table.getNumber() == order.getTableNumber()) {
+                        Customer customer = table.getCurrentCustomer();
+                        if (customer != null) {
+                            System.out.println("Mesero encontró cliente en mesa " + order.getTableNumber());
+                            customer.startEating();
+                        } else {
+                            System.out.println("Error: No se encontró cliente en mesa " + order.getTableNumber());
+                        }
+                        break;
+                    }
+                }
+                state = WaiterState.RESTING;
+                isBusy = false;
+            });
+        }
     }
 
-    public Direction getDirection() {
-        return direction;
+    private Point2D calculateTablePosition(int tableNumber) {
+        int row = tableNumber / GameConfig.TABLES_PER_ROW;
+        int col = tableNumber % GameConfig.TABLES_PER_ROW;
+        return new Point2D(
+                GameConfig.TABLES_START_X + (col * GameConfig.TABLE_SPACING_X) + GameConfig.CUSTOMER_OFFSET_X,
+                GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y) + GameConfig.CUSTOMER_OFFSET_Y
+        );
     }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-    public Point2D getPosition(){ return position; }
-    public void setPosition(Point2D position) { this.position = position; }
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
-    public Texture getTexture() {
-        return texture;
-    }
-    public Client getCurrentCustomer() { return currentCustomer; }
-    public void setCurrentCustomer(Client currentCustomer){ this.currentCustomer = currentCustomer; }
 }

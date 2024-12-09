@@ -6,7 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/ChefComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/ClientComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/RecepcionistComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/WaiterComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/components/services/Direction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Chair.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Chef.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Client.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Order.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Recepcionist.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/entities/Waiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/KitchenMonitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/observer/ClientObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/observer/ClientObserver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/observer/IClientObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/observer/IClientObserver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/events/ClientMoveToTableEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/scenes/RestaurantScene.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/views/ChairView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/presentation/views/TypeGame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/IClientLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/IClientLogger.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,31 +77,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RestaurantGame.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RestaurantScene.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Herobrot/Documents/Cuatri-7B/ProgramacionConcurrente/Corte_3/javaRestaurant2D&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GameApp.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.RestaurantGame.executor": "Run",
+    "Application.RestaurantScene.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/alansanchez/Desktop/Repos/Escuela/javaRestaurant2D",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/assets" />
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/textures" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -99,6 +126,7 @@
       <option name="presentableId" value="Default" />
       <updated>1732821983779</updated>
       <workItem from="1732839102738" duration="1629000" />
+      <workItem from="1733704064005" duration="402000" />
     </task>
     <task id="LOCAL-00001" summary="wip: start with logic for client,waiter,chef and order">
       <option name="closed" value="true" />
@@ -147,12 +175,16 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="6888b278-7664-4ff9-b641-8267962a404c">
           <value>
             <State>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -171,6 +203,7 @@
                   </entry>
                 </map>
               </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
             </State>
           </value>
         </entry>
@@ -179,11 +212,6 @@
             <State />
           </value>
         </entry>
-      </map>
-    </option>
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="6888b278-7664-4ff9-b641-8267962a404c" value="TOOL_WINDOW" />
       </map>
     </option>
   </component>

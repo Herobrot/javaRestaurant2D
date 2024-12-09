@@ -1,17 +1,16 @@
 package domain.observer;
-import domain.entities.Client;
+import domain.entities.Customer;
 
 public class ClientObserver implements Observer {
-    private Client client;
+    private Customer client;
 
-    public ClientObserver(Client client) {
+    public ClientObserver(Customer client) {
         this.client = client;
     }
 
     @Override
     public void update(String message) {
-        System.out.println("Cliente " + client.getId() + " recibió notificación: " + message);
-        client.getComponent().moveClientOneStep(client);
+        System.out.println("Client " + client.getTableNumber() + " received message: " + message);
     }
 }
 

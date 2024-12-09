@@ -1,35 +1,55 @@
 package domain.entities;
 
+import com.almasb.fxgl.entity.component.Component;
 import javafx.geometry.Point2D;
 
-import java.util.List;
+public class Table extends Component {
+    private final int number;
+    private final Point2D position;
+    private volatile boolean isOccupied;
+    private volatile Customer currentCustomer;
+    private final Object tableLock = new Object();
 
-public class Table {
-    private int tableNumber;
-    private boolean available;
-    private List<Point2D> route;
-    private Chair chair;
-
-    public Table(int tableNumber, boolean available) {
-        this.tableNumber = tableNumber;
-        this.available = available;
+    public Table(int number, Point2D position) {
+        this.number = number;
+        this.position = position;
+        this.isOccupied = false;
+        this.currentCustomer = null;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public synchronized void release() {
+        System.out.println("Liberando mesa " + number);
+        this.currentCustomer = null;
+        this.isOccupied = false;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public synchronized void setCurrentCustomer(Customer customer) {
+        synchronized (tableLock) {
+            System.out.println("Asignando cliente a mesa " + number);
+            this.currentCustomer = customer;
+            this.isOccupied = (customer != null);
+            if (customer != null) {
+                System.out.println("Mesa " + number + " ocupada por cliente");
+            }
+        }
     }
 
-    public int getTableNumber() {
-        return tableNumber;
+    public synchronized Customer getCurrentCustomer() {
+        synchronized (tableLock) {
+            if (currentCustomer == null) {
+                System.out.println("Advertencia: Solicitando cliente de mesa " + number + " vacía");
+            } else {
+                System.out.println("Obteniendo cliente de mesa " + number);
+            }
+            return currentCustomer;
+        }
     }
-    public void setChair(Chair chair) { this.chair = chair; }
-    public Chair getChair(){ return chair; }
 
-    public void setRoute(List<Point2D> route) { this.route = route; }
+    public synchronized boolean isOccupied() {
+        return isOccupied;
+    }
 
-    public List<Point2D> getRoute(){ return route; }
+    public int getNumber() {
+        return number;
+    }
 }
