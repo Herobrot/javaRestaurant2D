@@ -29,7 +29,7 @@ public class GameConfig {
     public static final int MAX_EATING_TIME = 10000;
 
     // Dimensiones de los sprites
-    public static final int SPRITE_SIZE = 32;
+    public static final int SPRITE_SIZE = 24;
 
 
     // Nuevas constantes para el posicionamiento de mesas

@@ -1,17 +1,16 @@
 package factories;
 
-import com.almasb.fxgl.entity.Entity;
-import utils.*;
-import utils.ImageCache;
-import javafx.scene.image.ImageView;
+import com.almasb.fxgl.texture.Texture;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.texture;
 
 public abstract class AbstractCharacterFactory implements EntityFactory {
-    protected ImageView createCharacterSprite(String imagePath) {
-        ImageView imageView = new ImageView(ImageCache.getImage(imagePath));
-        imageView.setFitWidth(GameConfig.SPRITE_SIZE * 2);
-        imageView.setFitHeight(GameConfig.SPRITE_SIZE * 2);
-        imageView.setSmooth(true);
-        imageView.setCache(true);
-        return imageView;
+    protected Texture createCharacterSprite(String imagePath, int width, int height) {
+        Texture texture = texture(imagePath).copy();
+        texture.setFitWidth(width);
+        texture.setFitHeight(height);
+        texture.setSmooth(true);
+        texture.setCache(true);
+        return texture;
     }
 }
