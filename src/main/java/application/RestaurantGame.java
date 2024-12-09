@@ -106,8 +106,8 @@ public class RestaurantGame {
     private void initializeWaiters() {
         for (int i = 0; i < GameConfig.TOTAL_WAITERS; i++) {
             Point2D startPos = new Point2D(
-                    GameConfig.WAITER_X + GameConfig.SPRITE_SIZE,
-                    GameConfig.WAITER_Y - ((i + 1) * GameConfig.SPRITE_SIZE * 1.5)
+                    GameConfig.WAITER_X,
+                    GameConfig.WAITER_Y - ((i + 1) * 1.5)
             );
 
             Waiter waiter = new Waiter(

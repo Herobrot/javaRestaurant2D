@@ -11,7 +11,7 @@ public class ReceptionistFactory extends AbstractCharacterFactory {
     public Entity create(SpawnData data) {
         return entityBuilder()
                 .at(data.getX(), data.getY())
-                .viewWithBBox(createCharacterSprite("waiterLookingLeft.png", 24, 24))
+                .viewWithBBox(createCharacterSprite("waiterLookingRight.png", 24, 24))
                 .with(data.<Receptionist>get("receptionistComponent"))
                 .build();
     }

@@ -101,7 +101,7 @@ public class Waiter extends Component {
             state = WaiterState.TAKING_ORDER;
             Order order = new Order(orderIdGenerator.incrementAndGet(), tableNumber);
 
-            Point2D kitchenPos = new Point2D(GameConfig.KITCHEN_X - 50, GameConfig.KITCHEN_Y);
+            Point2D kitchenPos = new Point2D(GameConfig.KITCHEN_X, GameConfig.KITCHEN_Y+50);
             movement.moveTo(kitchenPos, () -> {
                 orderQueueMonitor.addOrder(order);
                 synchronized (stateLock) {
@@ -144,7 +144,7 @@ public class Waiter extends Component {
         int col = tableNumber % GameConfig.TABLES_PER_ROW;
         return new Point2D(
                 GameConfig.TABLES_START_X + (col * GameConfig.TABLE_SPACING_X) + GameConfig.CUSTOMER_OFFSET_X,
-                GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y) + GameConfig.CUSTOMER_OFFSET_Y
+                (GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y) + GameConfig.CUSTOMER_OFFSET_Y)-30
         );
     }
 

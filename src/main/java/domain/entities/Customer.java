@@ -86,7 +86,7 @@ public class Customer extends Component {
             state = CustomerState.MOVING_TO_TABLE;
             Point2D tablePos = calculateTablePosition(tableNumber);
 
-            // Asignar cliente a la mesa antes de moverse
+            // Assign customer to table before moving
             for (Entity tableEntity : tables) {
                 Table table = tableEntity.getComponent(Table.class);
                 if (table != null && table.getNumber() == tableNumber) {
@@ -122,7 +122,7 @@ public class Customer extends Component {
             customerStats.decrementWaitingForFood();
             customerStats.incrementEating();
 
-            // Thread para simular el tiempo de comida
+            // Thread to simulate meal time
             Thread eatingThread = new Thread(() -> {
                 try {
                     long eatingTime = ThreadLocalRandom.current().nextLong(
@@ -150,11 +150,11 @@ public class Customer extends Component {
     private void leaveRestaurant() {
         synchronized (stateLock) {
             if (tableNumber != -1) {
-                // Aseguramos que las actualizaciones de UI ocurran en el hilo de JavaFX
+                // Ensure that UI updates occur in the JavaFX thread.
                 Platform.runLater(() -> customerStats.decrementEating());
                 restaurantMonitor.releaseTable(tableNumber);
 
-                // Liberar la mesa
+                // Freeing the table
                 for (Entity tableEntity : tables) {
                     Table table = tableEntity.getComponent(Table.class);
                     if (table != null && table.getNumber() == tableNumber) {
@@ -168,7 +168,7 @@ public class Customer extends Component {
             state = CustomerState.LEAVING;
             Point2D exitPos = new Point2D(GameConfig.ENTRANCE_X, GameConfig.ENTRANCE_Y);
 
-            // Aseguramos que la eliminación de la entidad ocurra en el hilo de JavaFX
+            // We ensure that entity deletion occurs in the JavaFX thread.
             movement.moveTo(exitPos, () ->
                     Platform.runLater(() -> {
                         synchronized (stateLock) {

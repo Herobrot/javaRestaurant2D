@@ -25,10 +25,10 @@ public class Cook implements Runnable, observers.OrderObserver {
                 if (currentOrder != null) {
                     isResting = false;
 
-                    // Simular la preparación de la comida
+                    // Cooking simulation
                     Thread.sleep(currentOrder.getPreparationTime());
 
-                    // Marcar la orden como lista solo si aún estamos procesando esa orden
+                    // Mark the order as ready only if we are still processing the order
                     if (currentOrder.getStatus() == OrderStatus.PREPARING) {
                         orderQueueMonitor.markOrderAsReady(currentOrder);
                     }
@@ -36,7 +36,7 @@ public class Cook implements Runnable, observers.OrderObserver {
                     currentOrder = null;
                     isResting = true;
                 } else {
-                    // Si no hay órdenes, esperar un poco antes de verificar nuevamente
+                    // If there are no orders, wait a little while before checking again.
                     Thread.sleep(100);
                 }
             } catch (InterruptedException e) {

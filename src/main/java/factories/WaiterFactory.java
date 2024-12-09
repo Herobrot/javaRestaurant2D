@@ -12,7 +12,7 @@ import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 public class WaiterFactory extends AbstractCharacterFactory {
     @Override
     public Entity create(SpawnData data) {
-        Texture texture = createCharacterSprite("waiterLookingRight.png", 24, 24);
+        Texture texture = createCharacterSprite("waiterLookingDown.png", 24, 24);
 
         return entityBuilder()
                 .at(data.getX(), data.getY())
