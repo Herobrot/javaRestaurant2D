@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/GameApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/GameApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/RestaurantGameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/RestaurantGameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/objetos/Mesa1Persona.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Cocinero.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Cocinero2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Mesera.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Persona.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Persona2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Persona3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Persona4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/image/personas/Recepcionista.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +107,7 @@
       <updated>1732821983779</updated>
       <workItem from="1732839102738" duration="1629000" />
       <workItem from="1733704064005" duration="800000" />
-      <workItem from="1733704962859" duration="846000" />
+      <workItem from="1733704962859" duration="1971000" />
     </task>
     <task id="LOCAL-00001" summary="wip: start with logic for client,waiter,chef and order">
       <option name="closed" value="true" />
