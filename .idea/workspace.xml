@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/CustomerQueueMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/CustomerQueueMonitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/OrderQueueMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/OrderQueueMonitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/monitors/RestaurantMonitor.java" afterDir="false" />
-    </list>
+    <list default="true" id="00740ce6-f1f7-4775-801f-b358888201cf" name="Changes" comment="wip: logic for notify to client, eat client, and leaving client." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

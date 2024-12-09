@@ -6,15 +6,11 @@ import domain.models.CustomerStats;
 import javafx.geometry.Point2D;
 import java.util.Queue;
 import java.util.LinkedList;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Condition;
 
 public class Receptionist extends Component {
     private final Point2D position;
     private final RestaurantMonitor restaurantMonitor;
     private final Queue<Customer> waitingCustomers;
-    private final ReentrantLock lock;
-    private final Condition customerWaiting;
     private boolean isBusy;
     private final CustomerStats customerStats;
 
@@ -23,8 +19,6 @@ public class Receptionist extends Component {
         this.position = position;
         this.customerStats = customerStats;
         this.waitingCustomers = new LinkedList<>();
-        this.lock = new ReentrantLock();
-        this.customerWaiting = lock.newCondition();
         this.isBusy = false;
 
         startReceptionistBehavior();
@@ -44,42 +38,32 @@ public class Receptionist extends Component {
         }).start();
     }
 
-    public void addCustomerToQueue(Customer customer) {
-        lock.lock();
-        try {
-            int tableNumber = restaurantMonitor.findAvailableTable();
+    public synchronized void addCustomerToQueue(Customer customer) {
+        int tableNumber = restaurantMonitor.findAvailableTable();
 
-            if (tableNumber != -1) {
-                restaurantMonitor.occupyTable(tableNumber);
-                customer.assignTable(tableNumber);
-            } else {
-                waitingCustomers.add(customer);
-                customerStats.incrementWaitingForTable();
-                customer.waitForTable();
-                customerWaiting.signal();
-            }
-        } finally {
-            lock.unlock();
+        if (tableNumber != -1) {
+            restaurantMonitor.occupyTable(tableNumber);
+            customer.assignTable(tableNumber);
+        } else {
+            waitingCustomers.add(customer);
+            customerStats.incrementWaitingForTable();
+            customer.waitForTable();
+            notifyAll(); // Notificar a cualquier hilo que esté esperando en `processNextCustomer`
         }
     }
 
-    private void processNextCustomer() throws InterruptedException {
-        lock.lock();
-        try {
-            while (!waitingCustomers.isEmpty()) {
-                int tableNumber = restaurantMonitor.findAvailableTable();
-                if (tableNumber != -1) {
-                    Customer customer = waitingCustomers.poll();
-                    if (customer != null) {
-                        restaurantMonitor.occupyTable(tableNumber);
-                        customer.assignTable(tableNumber);
-                    }
-                } else {
-                    break;
-                }
+    private synchronized void processNextCustomer() throws InterruptedException {
+        while (waitingCustomers.isEmpty()) {
+            wait(); // Esperar hasta que haya clientes en la cola
+        }
+
+        int tableNumber = restaurantMonitor.findAvailableTable();
+        if (tableNumber != -1) {
+            Customer customer = waitingCustomers.poll();
+            if (customer != null) {
+                restaurantMonitor.occupyTable(tableNumber);
+                customer.assignTable(tableNumber);
             }
-        } finally {
-            lock.unlock();
         }
     }
 }
