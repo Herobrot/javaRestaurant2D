@@ -147,4 +147,14 @@ public class Waiter extends Component {
                 GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y) + GameConfig.CUSTOMER_OFFSET_Y
         );
     }
+
+    // Método para que el camarero reciba la notificación de una orden lista
+    public void notifyOrderReady(Order order) {
+        synchronized (stateLock) {
+            if (!isBusy) {
+                System.out.println("La orden de la mesa " + order.getTableNumber() + " está lista para ser entregada.");
+                deliverOrder(order);
+            }
+        }
+    }
 }

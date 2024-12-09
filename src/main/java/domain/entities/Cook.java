@@ -3,8 +3,9 @@ package domain.entities;
 import domain.models.Order;
 import domain.models.OrderStatus;
 import domain.monitors.OrderQueueMonitor;
+import observers.OrderObserver;
 
-public class Cook implements Runnable {
+public class Cook implements Runnable, observers.OrderObserver {
     private final OrderQueueMonitor orderQueueMonitor;
     private volatile boolean isResting;
     private Order currentOrder;
@@ -13,14 +14,13 @@ public class Cook implements Runnable {
     public Cook(int id, OrderQueueMonitor orderQueueMonitor) {
         this.orderQueueMonitor = orderQueueMonitor;
         this.isResting = true;
+        orderQueueMonitor.addObserver(this);
     }
-
 
     @Override
     public void run() {
         while (running && !Thread.currentThread().isInterrupted()) {
             try {
-                // Intentar obtener una nueva orden
                 currentOrder = orderQueueMonitor.getNextOrder();
                 if (currentOrder != null) {
                     isResting = false;
@@ -46,6 +46,12 @@ public class Cook implements Runnable {
         }
     }
 
+    @Override
+    public void onOrderReady(Order order) {
+        System.out.println("La orden para la mesa " + order.getTableNumber() + " está lista.");
+        orderQueueMonitor.notifyWaitersAboutReadyOrder(order);
+    }
+
     public void stop() {
         running = false;
         Thread.currentThread().interrupt();
@@ -58,5 +64,4 @@ public class Cook implements Runnable {
     public Order getCurrentOrder() {
         return currentOrder;
     }
-
 }

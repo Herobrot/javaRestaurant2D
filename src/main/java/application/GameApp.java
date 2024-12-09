@@ -18,35 +18,20 @@ public class GameApp extends GameApplication {
         settings.setWidth(GameConfig.WINDOW_WIDTH);
         settings.setHeight(GameConfig.WINDOW_HEIGHT);
         settings.setTitle("restaurante");
-        settings.setVersion("777");
+        settings.setVersion("1");
     }
 
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new GameFactory());
-
-        // Inicializar componentes principales
         customerStats = new CustomerStats();
-
-        // Inicializar el motor del juego
         gameEngine = new RestaurantGameEngine(getGameWorld(), customerStats);
-
-        // Inicializar el administrador de UI
-
-
-        // Iniciar el juego
         setupGame();
     }
 
     private void setupGame() {
-        // Crear el fondo
         getGameWorld().addEntity(gameEngine.createBackground());
-
-        // Inicializar componentes del juego
         gameEngine.initializeGameComponents();
-        
-
-        // Iniciar la generación de clientes
         gameEngine.startCustomerGeneration();
     }
 
