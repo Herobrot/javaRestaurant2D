@@ -24,7 +24,6 @@ public class MovementComponent extends Component {
         if (isMoving && targetPosition != null) {
             Point2D currentPos = entity.getPosition();
             Point2D direction = targetPosition.subtract(currentPos);
-
             double distance = direction.magnitude();
             if (distance < speed * tpf) {
                 entity.setPosition(targetPosition);

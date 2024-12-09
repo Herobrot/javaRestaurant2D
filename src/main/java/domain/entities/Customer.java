@@ -2,6 +2,7 @@ package domain.entities;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.texture.Texture;
 import components.MovementComponent;
 import domain.models.CustomerStats;
 import domain.monitors.RestaurantMonitor;
@@ -12,6 +13,7 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.List;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.texture;
 
 public class Customer extends Component {
     private final RestaurantMonitor restaurantMonitor;
@@ -28,6 +30,10 @@ public class Customer extends Component {
     private final int id;
     private final Object stateLock = new Object();
     private MovementComponent movement;
+    private final Texture textureLeft;
+    private final Texture textureUp;
+    private final Texture textureDown;
+    private final Texture textureRight;
 
     public enum CustomerState {
         ENTERING,
@@ -40,6 +46,12 @@ public class Customer extends Component {
         EATING,
         LEAVING
     }
+    public enum DirectionsState{
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
 
     public Customer(int id, RestaurantMonitor restaurantMonitor, OrderQueueMonitor orderQueueMonitor,
                     CustomerQueueMonitor customerQueueMonitor, CustomerStats customerStats, List<Entity> tables) {
@@ -49,6 +61,10 @@ public class Customer extends Component {
         this.customerQueueMonitor = customerQueueMonitor;
         this.customerStats = customerStats;
         this.tables = tables;
+        this.textureLeft = spriteBuilder("clientLookingLeft.png");
+        this.textureDown = spriteBuilder("clientLookingDown.png");
+        this.textureUp = spriteBuilder("clientLookingUp.png");
+        this.textureRight = spriteBuilder("clientLookingRight.png");
     }
 
     @Override
@@ -135,6 +151,7 @@ public class Customer extends Component {
                     synchronized (stateLock) {
                         if (state == CustomerState.EATING) {
                             System.out.println("Cliente " + id + " terminó de comer, procediendo a salir");
+                            updateTexture(DirectionsState.DOWN);
                             leaveRestaurant();
                         }
                     }
@@ -278,6 +295,7 @@ public class Customer extends Component {
         );
     }
 
+
     public CustomerState getState() {
         synchronized (stateLock) {
             return state;
@@ -286,6 +304,40 @@ public class Customer extends Component {
 
     public int getTableNumber() {
         return tableNumber;
+    }
+
+    private Texture spriteBuilder(String imagePath){
+        Texture texture = texture(imagePath).copy();
+        texture.setFitWidth(24);
+        texture.setFitHeight(24);
+        texture.setSmooth(true);
+        texture.setCache(true);
+        return texture;
+    }
+
+    private void updateTexture(DirectionsState direction) {
+        Platform.runLater(() -> {
+            synchronized (stateLock) {
+                switch (direction) {
+                    case UP:
+                        entity.getViewComponent().clearChildren();
+                        entity.getViewComponent().addChild(this.textureUp);
+                        break;
+                    case LEFT:
+                        entity.getViewComponent().clearChildren();
+                        entity.getViewComponent().addChild(this.textureLeft);
+                        break;
+                    case RIGHT:
+                        entity.getViewComponent().clearChildren();
+                        entity.getViewComponent().addChild(this.textureRight);
+                        break;
+                    case DOWN:
+                        entity.getViewComponent().clearChildren();
+                        entity.getViewComponent().addChild(this.textureDown);
+                        break;
+                }
+            }
+        });
     }
 
 }

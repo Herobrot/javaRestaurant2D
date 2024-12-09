@@ -27,14 +27,6 @@ public class OrderQueueMonitor {
         this.observers = new ArrayList<>();
         this.waiters = new ArrayList<>();
     }
-    public void registerWaiter(Waiter waiter) {
-        lock.lock();
-        try {
-            waiters.add(waiter);
-        } finally {
-            lock.unlock();
-        }
-    }
 
     public void addObserver(OrderObserver observer) {
         observers.add(observer);

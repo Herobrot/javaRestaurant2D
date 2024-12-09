@@ -5,8 +5,8 @@ public class GameConfig {
     public static final int WINDOW_WIDTH = 512;
     public static final int WINDOW_HEIGHT = 384;
     public static final int TOTAL_TABLES = 10;
-    public static final int TOTAL_WAITERS = 1;
-    public static final int TOTAL_COOKS = 2;
+    public static final int TOTAL_WAITERS = 2;
+    public static final int TOTAL_COOKS = 3;
 
     // Spawnpoints
     public static final double ENTRANCE_X = 300;
