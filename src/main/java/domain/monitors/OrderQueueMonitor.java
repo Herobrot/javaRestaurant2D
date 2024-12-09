@@ -1,13 +1,13 @@
 package domain.monitors;
 
+import domain.entities.Waiter;
 import domain.models.Order;
 import domain.models.OrderStatus;
-import java.util.LinkedList;
-import java.util.Queue;
+import observers.OrderObserver;
+
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.Map;
-import java.util.HashMap;
 
 public class OrderQueueMonitor {
     private final Queue<Order> pendingOrders;
@@ -15,6 +15,8 @@ public class OrderQueueMonitor {
     private final ReentrantLock lock;
     private final Condition orderAvailable;
     private final Condition orderReady;
+    private final List<OrderObserver> observers;
+    private final List<Waiter> waiters;
 
     public OrderQueueMonitor() {
         this.pendingOrders = new LinkedList<>();
@@ -22,6 +24,32 @@ public class OrderQueueMonitor {
         this.lock = new ReentrantLock();
         this.orderAvailable = lock.newCondition();
         this.orderReady = lock.newCondition();
+        this.observers = new ArrayList<>();
+        this.waiters = new ArrayList<>();
+    }
+    public void registerWaiter(Waiter waiter) {
+        lock.lock();
+        try {
+            waiters.add(waiter);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void addObserver(OrderObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifyObservers(Order order) {
+        for (OrderObserver observer : observers) {
+            observer.onOrderReady(order);
+        }
+
+    }
+    public void notifyWaitersAboutReadyOrder(Order order) {
+        for (Waiter waiter : waiters) {
+            waiter.notifyOrderReady(order);
+        }
     }
 
     public void addOrder(Order order) {
@@ -55,6 +83,7 @@ public class OrderQueueMonitor {
         try {
             order.setStatus(OrderStatus.READY);
             readyOrders.put(order.getTableNumber(), order);
+            notifyObservers(order);
             orderReady.signal();
         } finally {
             lock.unlock();

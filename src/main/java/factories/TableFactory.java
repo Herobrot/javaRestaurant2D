@@ -3,9 +3,7 @@ package factories;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.Texture;
-import utils.*;
 import domain.entities.Table;
-import utils.ImageCache;
 import javafx.geometry.Point2D;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;

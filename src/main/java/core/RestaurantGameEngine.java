@@ -126,12 +126,11 @@ public class RestaurantGameEngine {
     }
 
     private void initializeCooks() {
-        double kitchenY = GameConfig.KITCHEN_Y;
         for (int i = 0; i < GameConfig.TOTAL_COOKS; i++) {
             Cook cook = new Cook(i, orderQueueMonitor);
             SpawnData data = new SpawnData(
-                    GameConfig.KITCHEN_X,
-                    kitchenY + (i * GameConfig.SPRITE_SIZE)
+                    GameConfig.KITCHEN_X + 30*i,
+                    GameConfig.KITCHEN_Y
             );
             data.put("cookComponent", cook);
             Entity cookEntity = gameWorld.spawn("cook", data);
