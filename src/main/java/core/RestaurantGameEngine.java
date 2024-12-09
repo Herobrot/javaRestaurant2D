@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +51,7 @@ public class RestaurantGameEngine {
     }
 
     public Entity createBackground() {
-        InputStream is = getClass().getResourceAsStream("background.png");
+        InputStream is = getClass().getResourceAsStream("/image/background.png");
         Image backgroundImage = new Image(is);
         ImageView backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setFitWidth(GameConfig.WINDOW_WIDTH);
@@ -82,13 +83,13 @@ public class RestaurantGameEngine {
             int col = i % GameConfig.TABLES_PER_ROW;
             double x = GameConfig.TABLES_START_X + (col * GameConfig.TABLE_SPACING_X);
             double y = GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y);
-
             SpawnData data = new SpawnData(x, y);
-            data.put("tableNumber", i);
+            data.put("tableNumber",Integer.valueOf(i));
             Entity table = gameWorld.spawn("table", data);
             tables.add(table);
         }
     }
+
 
     private void initializeReceptionist() {
         Point2D receptionistPos = new Point2D(GameConfig.RECEPTIONIST_X, GameConfig.RECEPTIONIST_Y);
