@@ -144,7 +144,7 @@ public class Waiter extends Component {
         int col = tableNumber % GameConfig.TABLES_PER_ROW;
         return new Point2D(
                 GameConfig.TABLES_START_X + (col * GameConfig.TABLE_SPACING_X) + GameConfig.CUSTOMER_OFFSET_X,
-                (GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y) + GameConfig.CUSTOMER_OFFSET_Y)-30
+                (GameConfig.TABLES_START_Y + (row * GameConfig.TABLE_SPACING_Y) + GameConfig.CUSTOMER_OFFSET_Y)-35
         );
     }
 

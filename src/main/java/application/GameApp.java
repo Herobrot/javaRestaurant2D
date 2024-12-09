@@ -16,7 +16,7 @@ public class GameApp extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setWidth(GameConfig.WINDOW_WIDTH);
         settings.setHeight(GameConfig.WINDOW_HEIGHT);
-        settings.setTitle("restaurante");
+        settings.setTitle("restauranteJava2D");
         settings.setVersion("1");
     }
 

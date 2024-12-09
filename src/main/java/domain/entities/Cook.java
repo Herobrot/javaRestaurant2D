@@ -3,7 +3,6 @@ package domain.entities;
 import domain.models.Order;
 import domain.models.OrderStatus;
 import domain.monitors.OrderQueueMonitor;
-import observers.OrderObserver;
 
 public class Cook implements Runnable, observers.OrderObserver {
     private final OrderQueueMonitor orderQueueMonitor;
